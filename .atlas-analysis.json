@@ -1,0 +1,138 @@
+{
+  "projectType": "saas",
+  "projectName": "Urbanshade OS",
+  "projectDescription": "A browser-first operating system simulation with a full desktop environment, 70+ built-in apps, cloud accounts, a community package manager (UUR), and developer tooling.",
+  "theme": "palm",
+  "primaryColor": "#06abd6",
+  "lightColor": "#083667",
+  "darkColor": "#d6f0f4",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting Started",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "User Guide",
+            "pages": [
+              "getting-started",
+              "applications",
+              "facility-apps",
+              "terminal-guide",
+              "shortcuts",
+              "troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Features",
+        "groups": [
+          {
+            "group": "What's New",
+            "pages": ["features/overview", "features/advanced"]
+          },
+          {
+            "group": "System",
+            "pages": ["features/bios-recovery", "features/uur"]
+          }
+        ]
+      },
+      {
+        "tab": "DEF-DEV",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["defdev/index", "defdev/setup"]
+          },
+          {
+            "group": "Core Tools",
+            "pages": [
+              "defdev/console",
+              "defdev/actions",
+              "defdev/terminal",
+              "defdev/storage"
+            ]
+          },
+          {
+            "group": "Diagnostics",
+            "pages": [
+              "defdev/bugchecks",
+              "defdev/diagnostics",
+              "defdev/api",
+              "defdev/admin"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developer",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["dev/index", "dev/architecture"]
+          },
+          {
+            "group": "Building",
+            "pages": [
+              "dev/building-apps",
+              "dev/theming",
+              "dev/terminal-commands",
+              "dev/system-bus",
+              "dev/uur-packages"
+            ]
+          },
+          {
+            "group": "Contributing",
+            "pages": ["dev/contributing"]
+          }
+        ]
+      },
+      {
+        "tab": "Safety & Community",
+        "groups": [
+          {
+            "group": "Safety",
+            "pages": [
+              "safety/overview",
+              "safety/badges",
+              "safety/account-safety",
+              "safety/reporting"
+            ]
+          },
+          {
+            "group": "Moderation",
+            "pages": [
+              "moderation/overview",
+              "moderation/navi-monitor",
+              "moderation/actions",
+              "moderation/statistics"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Browser-first OS desktop environment with window management, taskbar, and start menu",
+    "70+ built-in apps including Terminal, File Explorer, Browser, Settings, and Facility tools",
+    "Online accounts and cloud sync powered by Supabase (sign up, profiles, sync)",
+    "UUR (UrbanShade User Repository) — community-driven package manager with 50+ packages",
+    "DEF-DEV Console 3.0 — developer toolkit with console, terminal, actions, storage, and diagnostics",
+    "BIOS/UEFI interface, recovery mode, safe mode, and BugcheckScreen crash handling",
+    "Moderation system with NAVI Monitor, ban/warn/mute actions, and statistics",
+    "Full in-app documentation with multiple guides, changelog viewer, and search"
+  ],
+  "publicApiSurface": [
+    "UUR CLI: uur inst <pkg>, uur rm <pkg>, uur up, uur search <query>, uur info <pkg>",
+    "Terminal commands: help, ls, cd, cat, mkdir, rm, ps, kill, top, neofetch, ping, curl",
+    "DEF-DEV terminal: bugcheck <code>, crash [type], reboot, shutdown, ls, get/set/del, lockdown",
+    "System Bus events: crash, reboot, lockdown, boot (src/lib/systemBus.ts)",
+    "App Registry: appRegistry.tsx for registering new apps",
+    "Keyboard shortcuts: Shift+T (Terminal), Shift+Q (Close), Shift+L (Lock), Ctrl+Shift+D (DEF-DEV)",
+    "BIOS access: DEL during POST; Recovery Mode: F2; Safe Mode: F8"
+  ]
+}

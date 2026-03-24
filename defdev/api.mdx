@@ -7,7 +7,7 @@ keywords: ["def-dev", "api", "action dispatcher", "command queue", "system bus"]
 Urbanshade OS exposes three internal APIs that DEF-DEV and application code can use: the **Action Dispatcher**, the **Command Queue**, and the **System Bus**. Each serves a distinct communication role.
 
 <Note>
-  All three APIs are accessible from the browser console via `window.actionDispatcher`, `window.commandQueue`, and `window.systemBus`.
+  `systemBus` is exposed on `window` for quick browser console access: `window.systemBus`. The `actionDispatcher` and `commandQueue` singletons are imported directly from their modules in application code.
 </Note>
 
 ## Architecture overview
@@ -18,64 +18,118 @@ Urbanshade OS exposes three internal APIs that DEF-DEV and application code can 
 | Command Queue | localStorage polling | Cross-page control (DEF-DEV → OS) |
 | System Bus | In-memory pub/sub | Same-page component communication |
 
+---
+
 ## Action Dispatcher
 
-The Action Dispatcher is the central event bus for logging, persistence to localStorage, and subscriber notifications.
+The Action Dispatcher (`src/lib/actionDispatcher.ts`) logs system events, persists them to localStorage with consent, and notifies subscribers in real time.
 
 ```typescript
+import { actionDispatcher } from "@/lib/actionDispatcher";
+
 // Dispatch an action
-actionDispatcher.dispatch({
-  type: 'SYSTEM',
-  action: 'boot_complete',
-  details: { version: '2.2.0' }
-});
+actionDispatcher.dispatch("SYSTEM", "Boot complete", { version: "3.5.0" });
 
-// Subscribe to actions
+// Subscribe to all actions
 const unsubscribe = actionDispatcher.subscribe((action) => {
-  console.log('Action:', action.type, action.action);
+  console.log(action.type, action.message, action.details);
 });
 
-// Control persistence
+// Control persistence (requires user consent)
 actionDispatcher.setPersistence(true);
-actionDispatcher.loadFromStorage();
 actionDispatcher.clearStorage();
+```
+
+### Action types
+
+```typescript
+export type ActionType =
+  | "SYSTEM"
+  | "APP"
+  | "FILE"
+  | "USER"
+  | "SECURITY"
+  | "WINDOW"
+  | "ERROR";
 ```
 
 ### Convenience methods
 
-The Action Dispatcher provides shorthand methods for each action type:
+Each action type has a shorthand method on the singleton:
 
-| Method | Action type |
+| Method | Dispatches type |
 |---|---|
-| `actionDispatcher.system()` | `SYSTEM` |
-| `actionDispatcher.user()` | `USER` |
-| `actionDispatcher.app()` | `APP` |
-| `actionDispatcher.file()` | `FILE` |
-| `actionDispatcher.error()` | `SECURITY` (error variant) |
-| `actionDispatcher.security()` | `SECURITY` |
+| `actionDispatcher.system(msg, details?)` | `SYSTEM` |
+| `actionDispatcher.app(msg, details?)` | `APP` |
+| `actionDispatcher.file(msg, details?)` | `FILE` |
+| `actionDispatcher.user(msg, details?)` | `USER` |
+| `actionDispatcher.security(msg, details?)` | `SECURITY` |
+| `actionDispatcher.window(msg, details?)` | `WINDOW` |
+
+```typescript
+// Convenience methods
+actionDispatcher.system("Rebooting...");
+actionDispatcher.user("Login attempt", { username: "admin" });
+actionDispatcher.security("Access denied", { key: "restricted_area" });
+```
+
+### Dispatching errors
+
+Use `dispatchError` (or the `dispatchError` named export) for formatted error events. Errors use predefined error type constants:
+
+```typescript
+import { actionDispatcher, ERROR_TYPES } from "@/lib/actionDispatcher";
+
+// Using the instance method
+actionDispatcher.dispatchError("FILE_NOT_FOUND", "config.json");
+// Produces: "!COULDN'T FIND BIN/FILE! - config.json"
+
+actionDispatcher.dispatchError("AUTH_FAILED", "Admin panel access");
+```
+
+Available error types: `FILE_NOT_FOUND`, `STORAGE_ERROR`, `PERMISSION_DENIED`, `CONNECTION_FAILED`, `PROCESS_CRASH`, `MEMORY_OVERFLOW`, `TIMEOUT`, `INVALID_OPERATION`, `CORRUPT_DATA`, `AUTH_FAILED`.
+
+### Full ActionEvent interface
+
+```typescript
+export interface ActionEvent {
+  type: ActionType;
+  message: string;
+  timestamp: Date;
+  details?: Record<string, any>;
+}
+```
+
+---
 
 ## Command Queue
 
-The Command Queue enables cross-page communication between DEF-DEV and the main OS by writing commands to localStorage. The main OS polls for and executes them at 4× per second.
+The Command Queue (`src/lib/commandQueue.ts`) enables cross-page communication between DEF-DEV and the main OS. Commands are written to `localStorage` under `urbanshade_command_queue`; the main OS polls at 250 ms intervals and executes them in FIFO order.
 
 ```typescript
-// Enqueue a command
-commandQueue.enqueue({
-  type: 'CRASH',
-  payload: { type: 'KERNEL_PANIC' },
-  source: 'DEF-DEV Admin'
-});
+import { commandQueue } from "@/lib/commandQueue";
 
-// Dequeue the next command
-const cmd = commandQueue.dequeue();
+// Queue a command (returns the command ID)
+const id = commandQueue.queue("REBOOT", {});
+const id2 = commandQueue.queue("CRASH", { type: "KERNEL_PANIC", process: "system.exe" });
+const id3 = commandQueue.queue("TOAST", { message: "Hello!", type: "success" });
+
+// Use convenience methods (recommended)
+commandQueue.queueReboot();
+commandQueue.queueBugcheck("0x0000007E", "SYSTEM_THREAD_EXCEPTION");
+commandQueue.queueToast("Done!", "success");
+commandQueue.queueLockdown("ALPHA");
+
+// Subscribe to specific command type
+const unsub = commandQueue.on("TOAST", (cmd) => {
+  console.log("Toast queued:", cmd.payload.message);
+});
 
 // Subscribe to all commands
-const unsubscribe = commandQueue.onAny((cmd) => {
-  console.log('Command:', cmd.type);
-});
+commandQueue.onAny((cmd) => console.log("Command:", cmd.type));
 
-// Control polling
-commandQueue.startPolling(250); // 4x per second
+// Start/stop the main OS polling loop
+commandQueue.startPolling(250); // call from the main page
 commandQueue.stopPolling();
 ```
 
@@ -89,52 +143,99 @@ commandQueue.stopPolling();
 | `SHUTDOWN` | Queue a system shutdown |
 | `LOCKDOWN` | Trigger lockdown mode |
 | `RECOVERY` | Boot into recovery mode |
+| `WIPE` | Wipe all localStorage data |
 | `WRITE_STORAGE` | Write a value to localStorage |
 | `DELETE_STORAGE` | Delete a localStorage key |
+| `EXEC_TERMINAL` | Execute a terminal command |
 | `TOAST` | Show a toast notification |
-| `WIPE` | Wipe all localStorage data |
+| `SAFE_MODE` | Enter safe mode |
+| `MAINTENANCE` | Toggle maintenance mode |
+| `LOGOUT` | Log out the current user |
+| `LOCK` | Lock the screen |
+| `OOBE` | Re-run the OOBE wizard |
+| `FAKE_BAN` | FakeMod: show ban popup |
+| `FAKE_TEMP_BAN` | FakeMod: show temp-ban popup |
+| `FAKE_WARN` | FakeMod: show warning popup |
+| `FAKE_MUTE` | FakeMod: show mute indicator |
+| `FAKE_KICK` | FakeMod: session kick popup |
+
+### QueuedCommand interface
+
+```typescript
+export interface QueuedCommand {
+  id: string;            // Auto-generated: cmd_<timestamp>_<random>
+  type: CommandType;
+  payload: Record<string, any>;
+  timestamp: string;     // ISO timestamp
+  executed?: boolean;
+  source: string;        // e.g. "def-dev"
+}
+```
+
+---
 
 ## System Bus
 
-The System Bus is a real-time in-memory pub/sub for same-page component communication. Events are processed immediately without any localStorage round-trip.
+The System Bus (`src/lib/systemBus.ts`) is an in-memory pub/sub singleton for same-page component communication. Every event is also dispatched as a DOM `CustomEvent` on `window` (`systembus-event`). The singleton is exposed globally as `window.systemBus`.
 
 ```typescript
-// Emit an event
-systemBus.emit('TRIGGER_CRASH', {
-  crashType: 'KERNEL_PANIC'
-});
+import { systemBus } from "@/lib/systemBus";
 
-// Subscribe to a specific event
-const unsubscribe = systemBus.on('TRIGGER_CRASH', (event) => {
-  console.log('Crash triggered:', event.payload);
+// Subscribe to a specific event (returns unsubscribe fn)
+const unsubscribe = systemBus.on("TRIGGER_REBOOT", (event) => {
+  console.log("Reboot triggered at", event.timestamp);
 });
 
 // Subscribe to all events
 systemBus.onAny((event) => {
-  console.log('Event:', event.type);
+  console.log(event.type, event.payload);
 });
+
+// Emit using convenience methods (recommended)
+systemBus.triggerCrash("memory", "my-app");
+systemBus.triggerBugcheck("0x0000007E", "SYSTEM_THREAD_EXCEPTION");
+systemBus.triggerLockdown("ALPHA");
+systemBus.enterRecovery();
+systemBus.triggerReboot();
+systemBus.triggerShutdown();
+systemBus.openDevMode();
+systemBus.closeAdminPanel();
+
+// DOM event bridge (useful outside React)
+window.addEventListener("systembus-event", (e) => {
+  const event = (e as CustomEvent<SystemEvent>).detail;
+  console.log(event.type, event.payload);
+});
+
+// Debug from browser console
+window.systemBus.triggerReboot();
 ```
 
-### System Bus events
-
-| Event | Description |
-|---|---|
-| `TRIGGER_CRASH` | Initiate a crash screen |
-| `TRIGGER_BUGCHECK` | Initiate a BSOD bugcheck |
-| `TRIGGER_LOCKDOWN` | Trigger facility lockdown screen |
-| `ENTER_RECOVERY` | Transition to recovery mode |
-| `TRIGGER_REBOOT` | Reboot the OS |
-| `TRIGGER_SHUTDOWN` | Shut down the OS |
-| `OPEN_DEV_MODE` | Open DEF-DEV console |
-| `MAINTENANCE_MODE` | Enter maintenance mode |
-
-## Global access
-
-All three APIs are exposed on `window` for quick access from the browser DevTools console:
+### SystemEventType
 
 ```typescript
-// Access APIs from browser console
-window.actionDispatcher
-window.commandQueue
-window.systemBus
+export type SystemEventType =
+  | "TRIGGER_CRASH"
+  | "TRIGGER_BUGCHECK"
+  | "TRIGGER_LOCKDOWN"
+  | "ENTER_RECOVERY"
+  | "TRIGGER_REBOOT"
+  | "TRIGGER_SHUTDOWN"
+  | "OPEN_DEV_MODE"
+  | "CLOSE_ADMIN_PANEL"
+  | "CUSTOM_COMMAND";
 ```
+
+### Events reference
+
+| Event | Payload | Description |
+|---|---|---|
+| `TRIGGER_CRASH` | `{ crashType: CrashType, process?: string }` | Trigger a crash screen |
+| `TRIGGER_BUGCHECK` | `{ code: string, description: string }` | Trigger a BSOD bugcheck |
+| `TRIGGER_LOCKDOWN` | `{ protocol: string }` | Activate facility lockdown |
+| `ENTER_RECOVERY` | — | Enter recovery environment |
+| `TRIGGER_REBOOT` | — | Reboot the OS |
+| `TRIGGER_SHUTDOWN` | — | Shut down the OS |
+| `OPEN_DEV_MODE` | — | Open DEF-DEV console |
+| `CLOSE_ADMIN_PANEL` | — | Close the admin panel |
+| `CUSTOM_COMMAND` | `any` | Custom user-defined event |

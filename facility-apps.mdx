@@ -27,7 +27,7 @@ Critical systems for maintaining facility security and specimen containment.
 
     **Features:** Vital signs, containment integrity, threat levels, alert system
 
-    **Status:** Critical — Downloadable
+    **Status:** Critical — not included in default install
   </Card>
   <Card title="Emergency Protocols" icon="alert-triangle">
     Initiate and manage emergency procedures.
@@ -55,14 +55,14 @@ Manage the facility's critical infrastructure systems.
 
     **Features:** Power routing, load balancing, generator status, priority management
 
-    **Downloadable**
+    **Not included in default install**
   </Card>
   <Card title="Environmental Control" icon="thermometer">
     Monitor and adjust climate conditions throughout the facility.
 
     **Features:** Temperature, humidity, oxygen levels, pressure regulation
 
-    **Downloadable**
+    **Not included in default install**
   </Card>
   <Card title="Facility Map" icon="map-pin">
     Interactive facility floor plan with room-level detail. **Built-in.**
@@ -81,35 +81,25 @@ Manage the facility's critical infrastructure systems.
 Tools for managing staff and maintaining facility documentation.
 
 <CardGroup cols={2}>
-  <Card title="Personnel Directory" icon="users">
-    Access information on all facility staff members.
-
-    **Features:** Contact details, clearance levels, department info, status tracking
-
-    **Downloadable**
-  </Card>
   <Card title="Personnel Center" icon="user-check">
-    View and manage personnel records with admin controls. **Built-in.**
+    View and manage personnel records with admin controls. **Built-in (Standard).**
   </Card>
-  <Card title="Incident Reports" icon="file-warning">
+  <Card title="Incidents" icon="file-warning">
     Log and review facility incidents and anomalies.
 
     **Features:** Report creation, category tagging, timeline view, export options
 
-    **Built-in**
+    **Built-in (Standard)**
   </Card>
   <Card title="Research Notes" icon="book-open">
     Access and manage classified research documentation.
 
     **Features:** Document viewer, annotations, classification, collaboration
 
-    **Downloadable**
+    **Not included in default install**
   </Card>
   <Card title="Specimen Database" icon="database">
-    Browse the specimen database with search and filtering. **Built-in.**
-  </Card>
-  <Card title="User Directory" icon="users">
-    Full directory of registered facility users. **Built-in.**
+    Browse the specimen database with search and filtering. **Built-in (Standard).**
   </Card>
 </CardGroup>
 
@@ -134,21 +124,20 @@ Clearance level increases through achievements, time spent in the system, and ad
 
 All apps found under the Facility category in the App Store:
 
-| App | Description | Built-in |
-|-----|-------------|----------|
-| Security Cameras | Live camera feed network | Yes |
-| Containment Monitor | Specimen containment status | No |
-| Emergency Protocols | Emergency procedure management | Yes |
-| Signal Interceptor | Intercepted communications monitor | Yes |
-| Power Grid | Power distribution management | No |
-| Environmental Control | Climate and atmosphere systems | No |
-| Facility Map | Interactive floor plan | Yes |
-| Facility Planner | Layout design and editing | Yes |
-| Personnel Directory | Staff information database | No |
-| Personnel Center | Personnel records management | Yes |
-| Incident Reports | Incident logging and review | Yes |
-| Research Notes | Classified research documents | No |
-| Specimen Database | Specimen catalog and records | Yes |
+| App | App ID | Availability |
+|-----|--------|-------------|
+| Security Cameras | `cameras` | Standard install |
+| Containment Monitor | `containment` | Not in default install |
+| Emergency Protocols | `protocols` | Standard install |
+| Signal Interceptor | `signal-interceptor` | Standard install |
+| Power Grid | `power` | Not in default install |
+| Environmental Control | `environment` | Not in default install |
+| Facility Map | `map` | Standard install |
+| Facility Planner | `planner` | Standard install |
+| Personnel Center | `personnel-center` | Standard install |
+| Incidents | `incidents` | Standard install |
+| Research Notes | `research` | Not in default install |
+| Specimen Database | `database` | Standard install |
 
 <Note>
 For the full deep-sea research facility experience, run Security Cameras alongside the Containment Monitor. Watching empty corridors while containment integrity fluctuates is the intended experience.

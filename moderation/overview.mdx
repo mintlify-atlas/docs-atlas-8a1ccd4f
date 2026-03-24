@@ -1,0 +1,89 @@
+---
+title: "Moderation Overview"
+description: "Admin tools, role hierarchy, and panel access for Urbanshade OS moderators."
+keywords: ["moderation", "admin", "navi", "bans", "management", "panel"]
+---
+
+# Moderation overview
+
+The Urbanshade OS moderation panel is the central hub for admins to manage users, review reports, monitor NAVI activity, and keep the platform running smoothly.
+
+<Warning>
+  This documentation is for authorized administrators only. The moderation panel contains sensitive tools that can permanently affect user accounts. Handle with care.
+</Warning>
+
+## Who moderators are
+
+Moderation in Urbanshade OS is handled by a small team of trusted, appointed staff. There are no public applications — all staff positions are granted directly by the Creator.
+
+<CardGroup cols={2}>
+  <Card title="Creator (Aswd)" icon="crown">
+    Full control over everything. Can grant and revoke admin status, assign VIP status, and access owner-only features such as lockdowns. The only person who can make someone an admin.
+  </Card>
+  <Card title="Administrator" icon="shield">
+    Full access to the moderation panel, user management, bans, warnings, and most system controls. Cannot grant admin status to others or access owner-only features.
+  </Card>
+</CardGroup>
+
+<Note>
+  Trial Admins have access to a limited subset of moderation tools while in their probationary period. They operate under the supervision of full Admins.
+</Note>
+
+## Moderation scope
+
+The moderation panel covers the following areas:
+
+- **User management** — Search, view, and manage any user account. Review a user's moderation history, warnings, and ban status.
+- **Moderation actions** — Issue warnings, apply temporary or permanent bans, grant VIP status, and manage admin roles.
+- **NAVI monitoring** — Real-time visibility into automated activity, message filtering, lockout events, and autonomous response settings.
+- **Reports** — Review and resolve reports submitted by users.
+- **Statistics** — Analytics dashboard with user growth, moderation metrics, role distribution, and activity patterns.
+- **Quick actions** — System-wide controls including site lockdown, global broadcasts, and maintenance mode.
+
+## Panel sections
+
+<CardGroup cols={3}>
+  <Card title="NAVI Monitor" icon="eye" href="/moderation/navi-monitor">
+    Real-time monitoring of NAVI bot activity, message filtering, and lockout events.
+  </Card>
+  <Card title="Moderation actions" icon="gavel" href="/moderation/actions">
+    Warnings, bans, VIP grants, and all other enforcement tools.
+  </Card>
+  <Card title="Statistics dashboard" icon="bar-chart-3" href="/moderation/statistics">
+    User growth, moderation metrics, and analytics.
+  </Card>
+</CardGroup>
+
+## Accessing the panel
+
+The moderation panel is available at `/moderation`.
+
+<Steps>
+  <Step title="Log in to an admin account">
+    Make sure you are signed in with an account that has the Admin or Creator role. Your badge will be visible in the UI.
+  </Step>
+  <Step title="Navigate to /moderation">
+    Go to `/moderation` directly, or use the admin link in your profile menu.
+  </Step>
+  <Step title="Check your access level">
+    If you see a **Demo Mode** banner at the top, your account does not have admin access. All actions in demo mode are simulated and do not affect real users.
+  </Step>
+</Steps>
+
+<Note>
+  Non-admins can visit `/moderation` to explore the interface in demo mode. This is a great way to understand the tools before needing to use them.
+</Note>
+
+## Responsibilities
+
+With access to the moderation panel comes responsibility. All admins are expected to:
+
+- Apply rules **consistently** across all users, regardless of personal relationships
+- Always include a **specific reason** when taking any action
+- Follow the **progressive discipline** model — warnings before bans, temporary before permanent
+- Be prepared to **justify decisions** in the event of an appeal
+- **Never abuse** moderation powers for personal gain or to settle personal disputes
+
+<Warning>
+  Every moderation action is permanently logged with a timestamp, the acting admin's identity, and the stated reason. Abuse of moderation powers will result in role revocation.
+</Warning>

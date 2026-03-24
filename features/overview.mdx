@@ -1,0 +1,169 @@
+---
+title: "Latest Features"
+description: "Explore what's new in Urbanshade OS — boot system, UUR package manager, DEF-DEV enhancements, desktop improvements, crash recovery, and sound effects."
+keywords: ["features", "new", "update", "changelog", "boot", "uur", "sound", "desktop"]
+---
+
+Urbanshade OS has received major updates across several versions. This page covers the highlights from **v2.1** through **v2.7**.
+
+<Note>
+  For the full changelog, visit the changelog viewer in the live site at [urbanshade.aswd.dev](https://urbanshade.aswd.dev).
+</Note>
+
+## Feature areas
+
+<CardGroup cols={2}>
+  <Card title="Streamlined boot & login" icon="power-off" href="/features/overview#streamlined-boot--login">
+    Redesigned installer, OOBE wizard, avatar login screen, and clean progress boot.
+  </Card>
+  <Card title="UUR package manager" icon="package" href="/features/uur">
+    Ratings, categories, featured packages, and automatic dependency resolution.
+  </Card>
+  <Card title="DEF-DEV console" icon="bug" href="/defdev/index">
+    Command search, config export/import, and multi-command terminal scripts.
+  </Card>
+  <Card title="Desktop improvements" icon="monitor" href="/features/overview#desktop-improvements">
+    Virtual desktops, window groups, file associations, and doc search.
+  </Card>
+  <Card title="Crash & recovery system" icon="shield" href="/features/bios-recovery">
+    Severity levels, crash dump downloads, and recovery mode options.
+  </Card>
+  <Card title="Sound effects" icon="volume-2" href="/features/overview#sound-effects">
+    Audio feedback for boot, notifications, login, errors, and more.
+  </Card>
+</CardGroup>
+
+---
+
+## Streamlined boot & login
+
+<Info>
+  Introduced in **v2.1** as part of the Recovery, BIOS, and Installer overhaul.
+</Info>
+
+The boot experience was completely redesigned for a cleaner, faster startup.
+
+<CardGroup cols={2}>
+  <Card title="Redesigned installer" icon="settings">
+    Modern horizontal stepper with an Express Setup option for quick deployment.
+  </Card>
+  <Card title="OOBE wizard" icon="layout-template">
+    Guided Out of Box Experience for personalization and initial setup.
+  </Card>
+  <Card title="Login screen" icon="log-in">
+    User selection with avatars, password entry, and smooth transitions.
+  </Card>
+  <Card title="Clean boot screen" icon="monitor">
+    Simple progress bar with current action — no more cluttered terminal output.
+  </Card>
+</CardGroup>
+
+---
+
+## UUR package manager
+
+<Info>
+  Introduced in **v2.5**, with major UI and cloud improvements in **v2.7**.
+</Info>
+
+The UrbanShade User Repository has been enhanced with powerful new capabilities.
+
+<CardGroup cols={2}>
+  <Card title="Ratings & reviews" icon="star">
+    Rate packages 1–5 stars and leave reviews to help others find quality packages.
+  </Card>
+  <Card title="Package categories" icon="filter">
+    Browse by category: Apps, Utilities, Themes, Extensions, Games, and more.
+  </Card>
+  <Card title="Featured packages" icon="zap">
+    Discover curated packages in the Featured section, hand-picked by the UUR team.
+  </Card>
+  <Card title="Dependencies" icon="layers">
+    Packages can declare dependencies — the system auto-installs required packages.
+  </Card>
+</CardGroup>
+
+See the full [UUR Repository reference](/features/uur) for commands, package types, and how to submit your own package.
+
+---
+
+## DEF-DEV console enhancements
+
+<Info>
+  DEF-DEV base was introduced in **v2.1**, made public in **v2.3**, and overhauled further in **v2.7**.
+</Info>
+
+Developer tools received significant upgrades with new debugging capabilities.
+
+| Enhancement | Description |
+|---|---|
+| **Command search** | Search all available DEF-DEV commands with fuzzy matching and descriptions. |
+| **Export / import config** | Save and restore DEF-DEV preferences including filters, theme, and custom settings. |
+| **Terminal scripts** | Save multiple terminal commands as a script and execute them with a single command. |
+| **Multi-tab terminal** | Dedicated tabs for Console, Actions, Storage, Terminal, and more. |
+| **First-boot consent flow** | Explicit opt-in for DEF-DEV on first boot with alternative dev storage. |
+
+See the full [DEF-DEV guide](/defdev/index) for the complete console reference.
+
+---
+
+## Desktop improvements
+
+<Info>
+  Rolled out progressively from **v2.5** through **v2.7**.
+</Info>
+
+<CardGroup cols={2}>
+  <Card title="Multiple desktops" icon="layout-grid">
+    Create up to 8 virtual desktops to organize your windows. Switch with `Ctrl+Win+←/→`.
+  </Card>
+  <Card title="Window groups" icon="layers">
+    Group related windows together. Minimize, restore, or close entire groups at once.
+  </Card>
+  <Card title="File associations" icon="file-text">
+    Double-click files to open them with the right app — `.txt` opens Notepad, `.img` opens Image Editor.
+  </Card>
+  <Card title="Doc search" icon="search">
+    Search across all documentation from the docs page header. Find anything instantly.
+  </Card>
+</CardGroup>
+
+---
+
+## Crash & recovery system
+
+<Info>
+  Introduced in **v2.1** (BIOS/recovery) and expanded with severity levels in **v2.6**.
+</Info>
+
+Enhanced error handling and recovery options keep your system safe — and crashes more informative.
+
+| Feature | Description |
+|---|---|
+| **Severity levels** | Errors carry a severity: WARNING (recoverable), CRITICAL (action needed), or FATAL (system halt). |
+| **Crash dump files** | Download detailed `.dmp` files with full crash information for debugging and reporting. |
+| **Stack trace capture** | Automatic stack trace logging to DEF-DEV on every bugcheck. |
+| **Recovery mode** | Press `F2` during boot to access password reset, system repair, factory reset, and more. |
+
+See the [BIOS & Recovery](/features/bios-recovery) page for the full recovery walkthrough and all BIOS settings.
+
+---
+
+## Sound effects
+
+<Info>
+  Introduced in **v2.6** as part of the Online Accounts & UX polish update.
+</Info>
+
+Immersive audio feedback for system events. Enable sound in **Settings → Sound**.
+
+| Sound event | Trigger |
+|---|---|
+| Boot sounds | Plays during POST and OS startup |
+| Notifications | Incoming alerts and system messages |
+| Messages | New chat or inbox events |
+| Success | Completed actions |
+| Warnings | Non-critical alerts |
+| Errors | Failed operations |
+| Login / logout | Session start and end |
+| App open / close | Application launch and exit |

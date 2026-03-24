@@ -1,0 +1,177 @@
+---
+title: Troubleshooting
+description: Diagnostic guide for Urbanshade OS — common issues, FAQ, error codes, known issues, and recovery options.
+keywords: ["help", "troubleshooting", "faq", "problems", "recovery", "reset", "errors", "bugcheck"]
+---
+
+Something went wrong? Follow the steps below or look up your issue in the FAQ.
+
+## Steps before reporting
+
+Work through these steps in order before filing a bug report or contacting support. Most issues resolve at step 1 or 2.
+
+<Steps>
+  <Step title="Refresh the page">
+    Press `Ctrl+R` (Windows/Linux) or `Cmd+R` (Mac). This clears stale state without losing your saved data.
+  </Step>
+  <Step title="Hard refresh">
+    Press `Ctrl+Shift+R` (Windows/Linux) or `Cmd+Shift+R` (Mac) to force the browser to reload all cached assets.
+  </Step>
+  <Step title="Enter Recovery Mode">
+    Press `F2` during the boot animation to access Recovery Mode. From here you can reset your password, repair the installation, or factory reset.
+  </Step>
+  <Step title="Factory reset">
+    In Recovery Mode, select **Factory Reset**. This clears all local data and returns the OS to a clean state. Export your settings first if you want to restore them afterward (`Settings → System → Export`).
+  </Step>
+</Steps>
+
+<Warning>
+A factory reset deletes all locally stored data. If you have an account with sync enabled, your profile and settings will restore automatically after you log back in.
+</Warning>
+
+## Boot issues
+
+<AccordionGroup>
+  <Accordion title="Blank screen when the page loads">
+    **Cause:** Cached assets are stale or corrupted.
+
+    **Fix:** Do a hard refresh (`Ctrl+Shift+R`). If the screen is still blank, open browser DevTools (`F12`) → **Application** → **Storage** → **Clear site data**.
+  </Accordion>
+  <Accordion title="Stuck on the boot screen">
+    **Cause:** Boot animation is not completing, or a background service failed to initialize.
+
+    **Fix:** Press `ESC` to skip the boot animation. If the system remains stuck, press `F2` to enter Recovery Mode. If Recovery Mode is also unresponsive, clear `localStorage` via DevTools.
+  </Accordion>
+  <Accordion title="Bugcheck / crash screen appears">
+    **Cause:** A simulated system crash was triggered — either by the System Crash app, the `panic` terminal command, or an unhandled app error.
+
+    **Fix:** Click **Reboot Now** on the crash screen. If the system keeps crashing on boot, press `F8` to boot into Safe Mode, or `F2` → Recovery Mode → **Factory Reset**.
+
+    <Note>All bugcheck screens are cosmetic. No real data is damaged. You can also trigger crashes deliberately via the System Crash app or the `panic` terminal command.</Note>
+  </Accordion>
+  <Accordion title="Login loop — keeps returning to the login screen">
+    **Cause:** Your saved password may be corrupted in localStorage.
+
+    **Fix:** Press `F2` during boot → Recovery Mode → **Reset Password**. Alternatively, clear localStorage to start fresh.
+  </Accordion>
+  <Accordion title="Forgot my boot password">
+    **Fix:** Press `F2` during boot to enter Recovery Mode, then select **Reset Password**.
+  </Accordion>
+</AccordionGroup>
+
+## Data issues
+
+<AccordionGroup>
+  <Accordion title="Desktop icons or window positions reset">
+    **This is expected behavior.** Window positions are not persisted between sessions. Desktop icon positions reset on refresh. Your installed apps and account data are preserved.
+  </Accordion>
+  <Accordion title="System settings are not saving">
+    **Cause:** Your browser may be blocking localStorage. This is common in incognito / private browsing mode.
+
+    **Fix:** Check that your browser allows localStorage for this site. If you have an account, use **Settings → Sync** to restore settings from the cloud.
+  </Accordion>
+  <Accordion title="Account or profile data looks wrong">
+    **Cause:** Account data is stored in Supabase and synced across sessions. A stale local cache can cause a mismatch.
+
+    **Fix:** Log out and log back in. Check **Account Settings** for your current profile details.
+  </Accordion>
+  <Accordion title="Everything is gone after a refresh">
+    **Cause:** localStorage was cleared — either by you, by the browser, or by a factory reset.
+
+    **Fix:** If you had an account with sync enabled, log in and your data will restore automatically. Otherwise, use Recovery Mode (`F2`) for recovery options.
+  </Accordion>
+  <Accordion title="How do I export or import my data?">
+    Go to **Settings → System → Export/Import**. The exported file is JSON — do not edit it manually before reimporting.
+  </Accordion>
+  <Accordion title="The virtual file system resets on refresh">
+    **This is expected behavior.** The virtual file system is session-scoped by default. To persist files across sessions, use **Settings → Sync**.
+  </Accordion>
+</AccordionGroup>
+
+## App issues
+
+<AccordionGroup>
+  <Accordion title="Terminal is frozen or not responding">
+    **Fix:** Type `help` to check if the terminal is responsive. If it is truly frozen, close the Terminal window and reopen it from the Start menu or with `Shift+T`. Note that some commands only work in specific contexts.
+  </Accordion>
+  <Accordion title="DEF-DEV console is not capturing logs">
+    **Cause:** The DEF-DEV console only captures logs generated after it was opened. Logs from before it launched are not available.
+
+    **Fix:**
+    1. Make sure Developer Mode is enabled: **Settings → Developer Options → Developer Mode**
+    2. Accept the DEF-DEV warning screen
+    3. Reproduce the issue after the console is open
+  </Accordion>
+  <Accordion title="A downloadable app is not working correctly">
+    **Fix:** Close and reopen the app. If the problem persists, uninstall it from the App Store and reinstall. Check whether the app requires a specific clearance level or permissions you may not have.
+  </Accordion>
+  <Accordion title="How do I enable Developer Mode?">
+    Go to **Settings → Developer Options** and toggle **Developer Mode** on. This unlocks the DEF-DEV console and additional debugging tools.
+  </Accordion>
+</AccordionGroup>
+
+## Account & moderation issues
+
+<AccordionGroup>
+  <Accordion title="I received a permanent ban">
+    You can submit a ban appeal from the ban screen. Appeals are reviewed manually. Explain clearly why the ban should be lifted.
+  </Accordion>
+  <Accordion title="I received a temporary ban">
+    Temporary bans expire automatically. The ban screen displays the expiry time. Submit an appeal if you believe the ban was a mistake.
+  </Accordion>
+  <Accordion title="I received a warning">
+    Warnings are informational and do not restrict access. However, multiple warnings can lead to a temporary or permanent ban.
+  </Accordion>
+  <Accordion title="DEF-DEV triggered a fake moderation action">
+    Fake moderation actions triggered from DEF-DEV only affect your local session. Refresh the page to clear them.
+  </Accordion>
+  <Accordion title="How do I earn Kroner?">
+    Earn Kroner through daily login bonuses, completing quests, and Battle Pass rewards. Check the **Shop** for current prices and the **Battle Pass** for active quests.
+  </Accordion>
+  <Accordion title="What is my clearance level?">
+    Check your profile in **Account Settings**. Clearance increases through achievements, time spent in the system, and admin grants.
+  </Accordion>
+</AccordionGroup>
+
+## Bugcheck error codes
+
+These are the simulated bugcheck (BSOD) error codes you may encounter. They are cosmetic — no real damage occurs.
+
+| Error code | Description | Severity |
+|-----------|-------------|----------|
+| `IRQL_NOT_LESS_OR_EQUAL` | Memory access violation — usually a simulated crash | Critical |
+| `KERNEL_DATA_INPAGE_ERROR` | Disk read failure in the virtual file system | Critical |
+| `CRITICAL_PROCESS_DIED` | A core system process was terminated | Critical |
+| `SYSTEM_SERVICE_EXCEPTION` | An app caused an unhandled exception | High |
+| `MEMORY_MANAGEMENT` | Virtual memory subsystem error | High |
+| `PAGE_FAULT_IN_NONPAGED_AREA` | Invalid memory reference | High |
+| `DRIVER_POWER_STATE_FAILURE` | Power state transition error | Medium |
+| `WHEA_UNCORRECTABLE_ERROR` | Hardware abstraction layer error | Medium |
+
+## Known issues
+
+| Issue | Status | Notes |
+|-------|--------|-------|
+| Window positions reset after refresh | Known | Expected behavior — not persisted |
+| Some keyboard shortcuts don't work in inputs | Known | By design — prevents conflicts with typing |
+| Camera feeds show static | By design | That's the aesthetic |
+| DEF-DEV console not capturing logs | Known | Accept warning screen first |
+| File system resets on refresh | Known | Use Sync to persist across sessions |
+
+## Nuclear options
+
+Use these only as a last resort. Export your settings first.
+
+<Warning>
+All three options below will delete your locally saved data permanently.
+</Warning>
+
+| Option | Steps |
+|--------|-------|
+| Clear site data | DevTools (`F12`) → Application → Storage → Clear site data |
+| Factory reset | `F2` during boot → Recovery → Factory Reset |
+| Manual clear | DevTools console → `localStorage.clear()` → Refresh |
+
+<Note>
+This is a simulated OS built for fun. Worst case, refresh and start over — no real data is harmed.
+</Note>

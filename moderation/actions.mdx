@@ -1,0 +1,166 @@
+---
+title: "Moderation Actions"
+description: "Complete guide to enforcement tools available to Urbanshade OS administrators — warnings, bans, system controls, and the appeal process."
+keywords: ["moderation", "actions", "ban", "warning", "kick", "mute", "admin", "enforcement", "appeal"]
+---
+
+# Moderation actions
+
+The moderation panel provides a full set of enforcement tools. This page covers every available action, how each one affects users, duration options, and what to expect from the appeal process.
+
+<Warning>
+  Every moderation action is permanently logged with a timestamp, the acting admin's identity, and the stated reason. Abuse of moderation powers will result in role revocation.
+</Warning>
+
+## User actions
+
+These actions apply to individual user accounts.
+
+### Warning
+
+**Severity:** Low — **Duration:** Permanent record
+
+A formal notice to a user about a rule violation. Warnings do not restrict account access. They accumulate on the user's moderation record and are taken into account if further violations occur.
+
+Use warnings for first-time or minor violations before escalating to bans. A user's warning history is visible to all admins.
+
+---
+
+### Mute
+
+**Severity:** Moderate — **Duration:** 1 hour to 24 hours
+
+Temporarily revokes a user's ability to send messages and participate in chat. The user can still browse and use other parts of the OS — they simply cannot communicate publicly.
+
+Use mutes for users who are being disruptive in chat without rising to the level of a ban.
+
+---
+
+### Kick (session kick)
+
+**Severity:** Moderate — **Duration:** Immediate, one-time
+
+Terminates the user's current active session, forcing them to log back in. This is a non-punitive action with no lasting record beyond the action log. Use kicks to interrupt an ongoing session without applying a formal penalty.
+
+---
+
+### Temporary ban
+
+**Severity:** High — **Duration:** 1 hour to 30 days
+
+Suspends full account access for a set duration. The user receives a visible ban reason. When the duration expires, access is automatically restored.
+
+Temporate bans are appropriate for significant or repeated violations that do not yet warrant a permanent ban. Always specify a duration and include a clear reason.
+
+---
+
+### Permanent ban
+
+**Severity:** Critical — **Duration:** Indefinite
+
+Removes all account access permanently. The user receives a visible reason. Permanent bans can be appealed through the admin team.
+
+Reserve permanent bans for severe violations — serious harassment, exploitation of vulnerabilities, coordinated attacks, or repeated violations after multiple temporary bans. This is a last resort.
+
+---
+
+### Grant VIP status
+
+**Severity:** Owner-only
+
+Grants VIP perks to a user: cloud storage priority and bypass of NAVI message filtering when contacting the Creator. This action is restricted to the Creator (Aswd). Admins cannot grant VIP status.
+
+---
+
+### View user details
+
+Not an enforcement action — this lets you pull up a user's full profile, account creation date, warning count, active bans, and complete moderation history. Always review this before taking action.
+
+## Quick actions
+
+System-wide controls for emergencies and maintenance. These affect all users.
+
+<CardGroup cols={2}>
+  <Card title="Lock site" icon="lock">
+    Emergency lockdown. Prevents all non-admin users from accessing the platform until the lockdown is lifted. Use only in genuine emergencies.
+  </Card>
+  <Card title="Global broadcast" icon="radio">
+    Send a message to all currently online users. Use for important announcements, maintenance notices, or emergency alerts.
+  </Card>
+  <Card title="Maintenance mode" icon="settings">
+    Displays a maintenance screen to regular users while admins retain full access. Use during updates or active incident response.
+  </Card>
+  <Card title="Scheduled actions" icon="clock">
+    Plan bans, unbans, or other actions to execute at a specific time. Useful for time-zone-sensitive decisions or coordinated team responses.
+  </Card>
+</CardGroup>
+
+## How to take action
+
+<Steps>
+  <Step title="Find the user">
+    Search for the user in the **Users** tab, or navigate to them from a report. Review their moderation history before proceeding.
+  </Step>
+  <Step title="Select an action">
+    Click the appropriate action button: **Warn**, **Mute**, **Kick**, **Temp Ban**, or **Perm Ban**.
+  </Step>
+  <Step title="Fill in the required fields">
+    Enter the reason for the action. For temporary bans, also set the duration. Be specific — the reason is shown to the user and recorded permanently.
+  </Step>
+  <Step title="Review the preview">
+    The panel shows a preview of what the user will see when the action is applied. Confirm that the message is accurate and appropriate.
+  </Step>
+  <Step title="Confirm the action">
+    Click **Confirm**. The action is applied immediately and recorded in the moderation log.
+  </Step>
+</Steps>
+
+## Duration reference
+
+| Action | Minimum | Maximum | Recommended for |
+|--------|---------|---------|----------------|
+| Warning | Permanent | Permanent | First-time or minor violations |
+| Mute | 1 hour | 24 hours | Disruptive chat behavior |
+| Kick | Immediate | Immediate | Session disruption, non-punitive |
+| Temporary ban | 1 hour | 30 days | Significant or repeated violations |
+| Permanent ban | Indefinite | Indefinite | Severe violations, last resort |
+
+## Moderation guidelines
+
+<AccordionGroup>
+  <Accordion title="Progressive discipline">
+    Start with warnings. Then move to mutes or short temporary bans. Permanent bans are a last resort, not a first response. The goal is correction, not punishment.
+  </Accordion>
+  <Accordion title="Always include a reason">
+    Every action requires a reason. Be specific about which rule was violated. Vague reasons like "bad behavior" are not acceptable — state what happened clearly.
+  </Accordion>
+  <Accordion title="Be consistent">
+    Apply rules equally to all users. Personal relationships, friendships, and community standing should never influence a moderation decision. If you would not take the same action against a stranger, reconsider.
+  </Accordion>
+  <Accordion title="Appeals happen">
+    Users can appeal bans. When an appeal comes in, be prepared to explain your decision clearly and objectively. If new information shows the action was a mistake, be willing to reverse it.
+  </Accordion>
+</AccordionGroup>
+
+## Appeal process
+
+Users who receive a temporary or permanent ban may appeal through the following process:
+
+<Steps>
+  <Step title="User contacts an admin">
+    The banned user reaches out to a verified admin (via another account or through the appeal process if available) with their account username and an explanation of why they believe the ban was incorrect or should be reconsidered.
+  </Step>
+  <Step title="Admin reviews the case">
+    The reviewing admin pulls up the user's moderation history, the original action's reason, and any evidence on file. They may consult the admin who issued the ban.
+  </Step>
+  <Step title="Decision is made">
+    The reviewing admin either upholds the ban, modifies the duration, or lifts it. The decision is recorded in the moderation log.
+  </Step>
+  <Step title="User is notified">
+    The user receives a final answer. If the ban is lifted, access is restored immediately. If upheld, the original expiry stands.
+  </Step>
+</Steps>
+
+<Note>
+  Only the Creator (Aswd) can overturn a permanent ban. Admins can review and escalate permanent ban appeals, but the final decision rests with the Creator.
+</Note>

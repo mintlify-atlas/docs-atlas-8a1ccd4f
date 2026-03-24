@@ -1,0 +1,142 @@
+---
+title: System Bus API
+description: Typed pub/sub event bus for inter-component communication in Urbanshade OS.
+keywords: ['system bus', 'events', 'pub/sub', 'messaging', 'api', 'crashes', 'reboot']
+---
+
+The System Bus (`src/lib/systemBus.ts`) is a singleton typed pub/sub event bus for triggering system events without direct prop coupling. Every event is also dispatched as a DOM `CustomEvent` on `window`.
+
+## Overview
+
+- **Singleton** — one shared instance across the entire app
+- **Typed** — all event types are defined in the `SystemEventType` union
+- **DOM bridge** — every event is also dispatched via `window.dispatchEvent`
+- **Global debug access** — the instance is exposed on `window.systemBus`
+
+## TypeScript types
+
+```typescript
+// src/lib/systemBus.ts
+
+export type SystemEventType =
+  | "TRIGGER_CRASH"
+  | "TRIGGER_BUGCHECK"
+  | "TRIGGER_LOCKDOWN"
+  | "ENTER_RECOVERY"
+  | "TRIGGER_REBOOT"
+  | "TRIGGER_SHUTDOWN"
+  | "OPEN_DEV_MODE"
+  | "CLOSE_ADMIN_PANEL"
+  | "CUSTOM_COMMAND";
+
+export interface SystemEvent {
+  type: SystemEventType;
+  payload?: any;
+  timestamp: Date;
+}
+```
+
+## Available events
+
+| Event type | Description | Payload |
+|------------|-------------|----------|
+| `TRIGGER_CRASH` | Trigger a crash screen | `{ crashType: CrashType, process?: string }` |
+| `TRIGGER_BUGCHECK` | Trigger a blue screen / bugcheck | `{ code: string, description: string }` |
+| `TRIGGER_LOCKDOWN` | Activate facility lockdown | `{ protocol: string }` |
+| `ENTER_RECOVERY` | Enter recovery environment | — |
+| `TRIGGER_REBOOT` | Reboot the OS | — |
+| `TRIGGER_SHUTDOWN` | Shut down the OS | — |
+| `OPEN_DEV_MODE` | Open DEF-DEV developer tools | — |
+| `CLOSE_ADMIN_PANEL` | Close the admin panel | — |
+| `CUSTOM_COMMAND` | Custom user-defined event | `any` |
+
+## Subscribing to events
+
+Use `systemBus.on(type, callback)` to listen for a specific event, or `systemBus.onAny(callback)` to listen for all events. Both return an unsubscribe function — always call it in your cleanup to prevent memory leaks.
+
+```typescript
+import { systemBus } from "@/lib/systemBus";
+import { useEffect } from "react";
+
+// Subscribe to a specific event
+useEffect(() => {
+  const unsubscribe = systemBus.on("TRIGGER_CRASH", (event) => {
+    console.log("Crash triggered:", event.payload);
+    // event.type      = "TRIGGER_CRASH"
+    // event.payload   = { crashType, process }
+    // event.timestamp = Date
+  });
+
+  return () => unsubscribe();
+}, []);
+
+// Subscribe to ALL events
+useEffect(() => {
+  const unsubscribe = systemBus.onAny((event) => {
+    console.log("System event:", event.type, event.payload);
+  });
+  return () => unsubscribe();
+}, []);
+```
+
+## Emitting events
+
+Use the convenience methods for type-safe emission. The raw `emit()` method is available for `CUSTOM_COMMAND` or advanced use cases.
+
+```typescript
+import { systemBus } from "@/lib/systemBus";
+
+// Convenience methods (recommended)
+systemBus.triggerCrash("memory", "my-app");
+systemBus.triggerBugcheck("0x0000007E", "SYSTEM_THREAD_EXCEPTION");
+systemBus.triggerLockdown("ALPHA");
+systemBus.enterRecovery();
+systemBus.triggerReboot();
+systemBus.triggerShutdown();
+systemBus.openDevMode();
+systemBus.closeAdminPanel();
+
+// Raw emit — use for CUSTOM_COMMAND or advanced cases
+systemBus.emit("TRIGGER_CRASH", {
+  crashType: "memory",
+  process: "my-app"
+});
+```
+
+## DOM events and debug access
+
+Every SystemBus event is also dispatched as a DOM `CustomEvent` on `window`. This is useful for non-React code or cross-frame communication.
+
+```typescript
+// Listen via DOM (useful outside React)
+window.addEventListener("systembus-event", (e) => {
+  const event = (e as CustomEvent).detail;
+  console.log(event.type, event.payload);
+});
+
+// The bus instance is exposed on window for debugging
+window.systemBus.triggerReboot();
+```
+
+<Tip>
+  Open your browser console and type `window.systemBus.triggerReboot()` to test system events live without touching your code.
+</Tip>
+
+## Convenience method signatures
+
+```typescript
+class SystemBus {
+  on(type: SystemEventType, callback: EventCallback): () => void;
+  onAny(callback: EventCallback): () => void;
+  emit(type: SystemEventType, payload?: any): void;
+
+  triggerCrash(crashType: CrashType, process?: string): void;
+  triggerBugcheck(code: string, description: string): void;
+  triggerLockdown(protocol: string): void;
+  enterRecovery(): void;
+  triggerReboot(): void;
+  triggerShutdown(): void;
+  openDevMode(): void;
+  closeAdminPanel(): void;
+}
+```

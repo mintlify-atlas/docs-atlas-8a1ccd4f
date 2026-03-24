@@ -1,0 +1,111 @@
+---
+title: Architecture overview
+description: How Urbanshade OS is structured — boot flow, component hierarchy, state management, and hook architecture.
+keywords: ['architecture', 'react', 'typescript', 'components', 'state', 'hooks']
+---
+
+Urbanshade OS is a React 18 single-page application that simulates a desktop OS environment. This page explains how it is structured under the hood.
+
+## Technology stack
+
+| Technology | Role |
+|------------|------|
+| React 18 | UI library with hooks |
+| TypeScript | Type-safe JavaScript |
+| Tailwind CSS | Utility-first CSS |
+| Vite | Build tool and dev server |
+| Supabase | Auth, database, edge functions |
+| shadcn/ui | Headless component primitives |
+
+## Boot flow
+
+The entire OS lifecycle is managed by `src/pages/Index.tsx` — the "god component". It holds all top-level state and passes it down. The boot sequence is orchestrated by the `useBootSequence` hook.
+
+```text
+Index.tsx (god component)
+├── useBootSequence() orchestrates:
+│   ├── BiosScreen → BootScreen → InstallationScreen → OOBEScreen
+│   ├── DisclaimerScreen (first visit)
+│   └── Desktop Environment (ready)
+├── useModerationGates() checks:
+│   ├── BannedScreen / TempBanPopup
+│   ├── MaintenanceMode
+│   └── LockdownScreen
+└── Desktop Environment
+    ├── Desktop (icons, wallpaper, widgets)
+    ├── WindowManager (renders app windows)
+    ├── Taskbar (start menu button, system tray)
+    ├── StartMenu (app launcher)
+    ├── NotificationCenter
+    └── AltTabSwitcher
+```
+
+## State management
+
+Urbanshade OS uses four complementary state mechanisms:
+
+<AccordionGroup>
+  <Accordion title="Local state (Index.tsx)">
+    The god component holds `windows[]`, `openApps`, desktop state, and passes everything via props. There is no global state library — it is all React state and props.
+  </Accordion>
+  <Accordion title="localStorage (persistence.ts)">
+    Settings, accounts, installed apps, theme preferences, and virtual file system data are persisted to `localStorage`. The `persistence.ts` module handles save/load operations.
+  </Accordion>
+  <Accordion title="SystemBus (systemBus.ts)">
+    A singleton pub/sub event bus for decoupled communication. Used to trigger crashes, reboots, lockdowns, and other system events without direct prop drilling. See [System Bus API](/dev/system-bus).
+  </Accordion>
+  <Accordion title="React Query (Supabase)">
+    Server state — profiles, messages, chat, achievements, shop items — is managed via React Query with Supabase as the data source.
+  </Accordion>
+</AccordionGroup>
+
+## Window lifecycle
+
+Apps are registered in `appRegistry.tsx` and rendered by `WindowManager.tsx` via a switch on the app ID. The core data types live in `src/types/window.ts`:
+
+```typescript
+// src/types/window.ts
+import type { ReactNode } from "react";
+
+export interface App {
+  id: string;
+  name: string;
+  icon: ReactNode;
+  run: () => void;
+  minimalInclude?: boolean;   // Shown in minimal install
+  standardInclude?: boolean;  // Shown in standard install
+  downloadable?: boolean;     // Available in App Store
+  searchAliases?: string[];   // Search keywords
+}
+
+export interface WindowData {
+  id: string;          // Unique window instance ID
+  app: App;            // The app definition
+  zIndex: number;      // Stacking order
+  minimized?: boolean; // Window state
+}
+```
+
+See [Building apps](/dev/building-apps) for a step-by-step guide to adding a new app.
+
+## Hook architecture
+
+Business logic is extracted into 40+ custom hooks organized by domain. All hooks live in `src/hooks/`.
+
+| Category | Hooks |
+|----------|-------|
+| System | `useBootSequence`, `useSystemSettings`, `useSystemPreferences`, `useBugcheck`, `useAutoBugcheck`, `useIdleLock`, `useKeyboardShortcuts` |
+| Windows & desktop | `useMultipleDesktops`, `useWindowSnap`, `useWindowGroups`, `useDesktopGrid`, `useWidgets` |
+| Social | `useFriends`, `useMessages`, `useGlobalChat`, `useContacts`, `useUserProfiles` |
+| Economy & progression | `useKroner`, `useShop`, `useBattlePass`, `useAchievements`, `useQuests`, `useLoginBonus`, `useLeaderboards` |
+| Moderation & security | `useModerationGates`, `useBanCheck`, `useNaviSecurity`, `useNaviAutonomous` |
+| Data & sync | `useAutoSync`, `useSyncHistory`, `useOnlineAccount`, `useVirtualFileSystem`, `useRecentFiles` |
+
+## Virtual file system
+
+The `useVirtualFileSystem` hook provides an in-memory file system with directories and files, persisted to `localStorage`. It is used by the File Explorer, Terminal, and Notepad apps. Supported operations:
+
+- Create files and directories
+- Read file contents
+- Delete files and directories
+- Traverse directory structure

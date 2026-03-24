@@ -1,122 +1,132 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Urbanshade OS",
+  "theme": "palm",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#06abd6",
+    "light": "#083667",
+    "dark": "#d6f0f4"
   },
   "favicon": "/favicon.svg",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/aswdBatch/urbanshade-OS"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/aswdBatch/urbanshade-OS"
+    }
+  },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Getting Started",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "group": "Overview",
+            "pages": ["introduction"]
           },
           {
-            "group": "Customization",
+            "group": "User Guide",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "getting-started",
+              "applications",
+              "facility-apps",
+              "terminal-guide",
+              "shortcuts",
+              "troubleshooting"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Features",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "What's New",
+            "pages": ["features/overview", "features/advanced"]
+          },
+          {
+            "group": "System",
+            "pages": ["features/bios-recovery", "features/uur"]
+          }
+        ]
+      },
+      {
+        "tab": "DEF-DEV",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["defdev/index", "defdev/setup"]
+          },
+          {
+            "group": "Core Tools",
             "pages": [
-              "api-reference/introduction"
+              "defdev/console",
+              "defdev/actions",
+              "defdev/terminal",
+              "defdev/storage"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Diagnostics",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "defdev/bugchecks",
+              "defdev/diagnostics",
+              "defdev/api",
+              "defdev/admin"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Developer",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["dev/index", "dev/architecture"]
+          },
+          {
+            "group": "Building",
+            "pages": [
+              "dev/building-apps",
+              "dev/theming",
+              "dev/terminal-commands",
+              "dev/system-bus",
+              "dev/uur-packages"
+            ]
+          },
+          {
+            "group": "Contributing",
+            "pages": ["dev/contributing"]
+          }
+        ]
+      },
+      {
+        "tab": "Safety & Community",
+        "groups": [
+          {
+            "group": "Safety",
+            "pages": [
+              "safety/overview",
+              "safety/badges",
+              "safety/account-safety",
+              "safety/reporting"
+            ]
+          },
+          {
+            "group": "Moderation",
+            "pages": [
+              "moderation/overview",
+              "moderation/navi-monitor",
+              "moderation/actions",
+              "moderation/statistics"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
+    ]
   }
 }

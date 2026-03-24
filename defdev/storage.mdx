@@ -1,0 +1,67 @@
+---
+title: "Storage"
+description: "Browse, search, and manage all localStorage entries used by Urbanshade OS."
+keywords: ["def-dev", "storage", "localStorage", "data", "keys"]
+---
+
+The Storage tab gives you a complete view of every localStorage entry used by Urbanshade OS. You can inspect raw values, search by key name, monitor usage metrics, and export snapshots for backup or analysis.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Search entries" icon="search">
+    Filter localStorage keys by name to find specific settings or data quickly.
+  </Card>
+  <Card title="View raw values" icon="key">
+    Expand any entry to see its raw JSON value. Useful for debugging data formats.
+  </Card>
+  <Card title="Storage metrics" icon="hard-drive">
+    View total entry count, storage size in bytes/KB/MB, and quota usage percentage.
+  </Card>
+  <Card title="Export snapshot" icon="download">
+    Export all localStorage data as a `.json` file for backup or offline analysis.
+  </Card>
+</CardGroup>
+
+## Common storage keys
+
+| Key | Description |
+|---|---|
+| `urbanshade_admin` | Admin account credentials and settings |
+| `urbanshade_accounts` | All user account data |
+| `urbanshade_settings` | System settings and preferences |
+| `urbanshade_installed` | Installation completion flag |
+| `urbanshade_bugchecks` | Stored bugcheck/crash reports |
+| `urbanshade_files` | Virtual file system data |
+| `urbanshade_bios` | BIOS configuration settings |
+| `def-dev-actions` | Persisted action log entries |
+| `def-dev-persistence` | Persistence enabled/disabled flag |
+| `urbanshade_command_queue` | Pending commands from DEF-DEV |
+
+## Terminal commands
+
+You can also manage storage directly from the [Terminal](/defdev/terminal):
+
+```bash
+$ ls              # List all localStorage keys
+$ get [key]       # Get a specific value
+$ set [key] [val] # Set a value
+$ del [key]       # Delete a key
+$ wipe            # Clear ALL localStorage (dangerous!)
+```
+
+## Tips
+
+<Tip>
+  Export a snapshot before making significant changes. This gives you a restore point if something breaks.
+</Tip>
+
+<Tip>
+  Use the terminal's `set` command for direct value edits when the UI is not precise enough.
+</Tip>
+
+## Caution
+
+<Warning>
+  Modifying or deleting storage keys can break Urbanshade OS functionality. Some keys are critical for system operation. Make sure you understand what a key does before modifying or deleting it.
+</Warning>

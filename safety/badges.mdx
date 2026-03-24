@@ -1,0 +1,136 @@
+---
+title: "User Badges"
+description: "Complete guide to Urbanshade OS badges — trust levels, how badges are earned, and how to spot fakes."
+keywords: ["badges", "trust", "admin", "vip", "creator", "verification", "roles"]
+---
+
+# User badges
+
+Badges identify roles and trust levels throughout Urbanshade OS. There are 8 badge types, each with a defined trust level and a specific way it is earned or assigned.
+
+<Warning>
+  Always check for a badge before trusting someone claiming to be staff. Real admins **always** have their badge visible. No exceptions.
+</Warning>
+
+## All badges
+
+### Creator
+
+**Trust level:** Maximum
+
+Exclusive to Aswd, the creator of Urbanshade OS. There is exactly one Creator badge in the entire system. It is automatically assigned and cannot be granted to anyone else.
+
+**How it is earned:** Built the whole thing.
+
+---
+
+### Co-Creator
+
+**Trust level:** Maximum
+
+Awarded to core contributors who helped build Urbanshade OS. Co-Creators have the highest trust level alongside the Creator and have been involved in foundational development.
+
+**How it is earned:** Appointed by Aswd.
+
+---
+
+### Admin
+
+**Trust level:** High
+
+Trusted staff who moderate and manage the platform. Admins have full access to the moderation panel, user management, and most system controls. They cannot grant admin status to others — only the Creator can do that.
+
+**How it is earned:** Appointed by Aswd.
+
+---
+
+### Trial Admin
+
+**Trust level:** Elevated
+
+Admins in a probationary period with limited moderation powers. Trial Admins are learning the tools and workflows before being granted full Admin status.
+
+**How it is earned:** Promoted from the regular user base.
+
+---
+
+### Moderator
+
+**Trust level:** Elevated
+
+Assists with moderation tasks and user support. Moderators help handle reports and guide users, but have more limited enforcement powers than full Admins.
+
+**How it is earned:** Promoted by admins.
+
+---
+
+### VIP
+
+**Trust level:** Trusted
+
+Users personally recognized by Aswd for contributions to the community or the project. VIPs receive perks such as cloud priority and bypassing NAVI message filtering when messaging the creator.
+
+**How it is earned:** Granted directly by Aswd.
+
+---
+
+### Bot
+
+**Trust level:** System
+
+Automated system accounts such as NAVI. Bot badges identify non-human accounts operating within the system. They are assigned by the system itself and cannot be manually granted.
+
+**How it is earned:** System-assigned at account creation.
+
+---
+
+### User
+
+**Trust level:** Standard
+
+Regular members of Urbanshade OS. All new accounts start with the User badge.
+
+**How it is earned:** Create an account.
+
+---
+
+## Trust hierarchy
+
+The hierarchy from highest to lowest trust:
+
+| Trust level | Roles |
+|-------------|-------|
+| Maximum | Creator, Co-Creator |
+| High | Admin |
+| Elevated | Trial Admin, Moderator |
+| Trusted | VIP |
+| System | Bot |
+| Standard | User |
+
+## How badges are displayed
+
+Badges appear directly in the user interface next to a user's display name or username. They are rendered by the system as styled components — they are not text, not emojis, and not part of the username. This makes them impossible to fake.
+
+<Note>
+  Badges are automatically applied based on the account's role in the database. Users cannot change or add badges to their own account.
+</Note>
+
+## Spotting fake badges
+
+Because badges are system-rendered components, any attempt to fake one will look visually different from the real thing.
+
+**Real badge:** Appears as a styled chip next to the username, rendered by the UI. Example — a Creator badge on Aswd's account appears as a small color-coded component with the Crown icon.
+
+**Fake badge:** Emojis or text placed inside a username or display name field. For example, `👑 [Admin] TotallyReal` is entirely fake. The text is part of the name, not a system component.
+
+<AccordionGroup>
+  <Accordion title="What if I'm not sure whether someone's badge is real?">
+    If you are unsure, do not take any action based on that person's claimed authority. Report the account to a verified admin (check their badge first) and let them investigate. When in doubt, trust the badge — not the words.
+  </Accordion>
+  <Accordion title="Can admins hide their badges?">
+    No. Badges are always visible when present. If someone claims to be an admin but has no badge, they are not an admin.
+  </Accordion>
+  <Accordion title="How do I become a VIP or Admin?">
+    VIP status and admin appointments are made solely by Aswd. There is no application process. Do not ask other admins to promote you — they do not have that authority.
+  </Accordion>
+</AccordionGroup>

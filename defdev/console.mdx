@@ -1,0 +1,77 @@
+---
+title: "Console"
+description: "Real-time log viewer with filtering, search, smart error simplification, and export capabilities."
+keywords: ["def-dev", "console", "logs", "errors", "debugging", "filtering"]
+---
+
+The Console tab captures and displays all output from Urbanshade OS in real time. It intercepts the browser's console methods (`log`, `warn`, `error`, `debug`) and presents them in a unified, filterable view.
+
+## Log levels
+
+Logs are color-coded by type to reduce noise at a glance:
+
+| Level | Color | Description |
+|---|---|---|
+| `error` | Red | Unhandled exceptions and critical failures |
+| `warn` | Yellow | Non-fatal issues and deprecation notices |
+| `info` | Blue | General status messages |
+| `debug` | Gray | Verbose diagnostic output |
+
+## Filtering logs
+
+Use the filter bar at the top of the Console tab to narrow down output:
+
+- **By level** — click the `error`, `warn`, `info`, or `debug` buttons to toggle each type on or off
+- **By keyword** — type into the search field to match log content in real time
+
+<Tip>
+  Filter to `error` only when troubleshooting to cut through informational noise.
+</Tip>
+
+## Log search and clear
+
+<CardGroup cols={3}>
+  <Card title="Copy logs" icon="copy">
+    Copy all visible logs to the clipboard in plain text format.
+  </Card>
+  <Card title="Export" icon="download">
+    Download logs as a `.txt` file with timestamps — useful for sharing bug reports.
+  </Card>
+  <Card title="Clear" icon="trash-2">
+    Remove all captured logs from the current session view.
+  </Card>
+</CardGroup>
+
+<Warning>
+  Clearing the console only removes logs from the current view. It does not affect persisted action logs in localStorage.
+</Warning>
+
+## Pause and resume
+
+Click **Pause** to stop auto-scrolling while the console continues capturing. This is essential when logs arrive faster than you can read them. Click **Resume** to return to live tailing.
+
+## Simple vs. technical view
+
+Toggle between two display modes:
+
+- **Simple** — errors are translated into plain language (default)
+- **Technical** — shows raw messages and full stack traces
+
+Switch to technical view when you need the full call stack for a bug report.
+
+### Error translation reference
+
+| Technical error | Simplified message |
+|---|---|
+| `Cannot read properties of undefined` | Something tried to use data that doesn't exist yet |
+| `Maximum call stack size exceeded` | The system got stuck in a loop |
+| `Failed to fetch` | Couldn't connect to the server |
+| `Unexpected token` | The code has a syntax error |
+| `null is not an object` | Tried to use something that wasn't set up properly |
+| `Permission denied` | You don't have access to do that |
+
+## Tips
+
+- **Export before clearing** — if you need logs for a bug report, export them before clearing the view.
+- **Pause for rapid sequences** — when many events fire at once, pause first, then scroll back.
+- **Use technical view for stack traces** — the simplified view hides the full trace to reduce clutter.

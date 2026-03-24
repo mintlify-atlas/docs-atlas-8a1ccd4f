@@ -1,0 +1,142 @@
+---
+title: "DEF-DEV Console 3.0"
+description: "The complete developer toolkit for debugging, testing, and analyzing Urbanshade OS."
+keywords: ["def-dev", "developer console", "debugging", "developer mode"]
+---
+
+## What is DEF-DEV?
+
+DEF-DEV is the built-in developer console for Urbanshade OS. It provides low-level access to system internals — real-time logs, an interactive terminal, action monitoring, localStorage inspection, diagnostics, and administrative controls — without touching the production experience.
+
+DEF-DEV 3.0 introduces a redesigned grouped navigation interface, integrated FakeMod testing, expanded terminal commands, and enhanced admin tooling.
+
+<Note>
+  DEF-DEV requires Developer Mode to be enabled. See [Setup](/defdev/setup) for all methods.
+</Note>
+
+## Quick start
+
+<Steps>
+  <Step title="Enable Dev Mode">
+    Go to **Settings → Developer Options** and toggle **Enable Developer Mode** on.
+  </Step>
+  <Step title="Open the console">
+    Press `Ctrl+Shift+D`, or click **Launch** in the Developer Options section.
+  </Step>
+  <Step title="Start debugging">
+    Use the grouped navigation tabs on the right — **Core**, **Diagnostics**, **System**, **Tools** — to access each feature.
+  </Step>
+</Steps>
+
+## Core features
+
+<CardGroup cols={2}>
+  <Card title="Console" icon="terminal" href="/defdev/console">
+    Real-time log viewer with filtering, search, pause/resume, and smart error simplification.
+  </Card>
+  <Card title="Actions" icon="activity" href="/defdev/actions">
+    Monitor system events and user interactions with optional localStorage persistence.
+  </Card>
+  <Card title="Terminal" icon="send" href="/defdev/terminal">
+    Interactive command-line interface for system control, storage management, and package operations.
+  </Card>
+  <Card title="Storage" icon="database" href="/defdev/storage">
+    Browse, search, and edit all localStorage entries used by Urbanshade OS.
+  </Card>
+</CardGroup>
+
+## Diagnostic tools
+
+<CardGroup cols={2}>
+  <Card title="Bugchecks" icon="shield-alert" href="/defdev/bugchecks">
+    View and analyze real BSOD-style crash reports with stop codes and severity levels.
+  </Card>
+  <Card title="Performance" icon="gauge">
+    FPS, memory usage, and render timing metrics in real time.
+  </Card>
+  <Card title="Network" icon="globe">
+    HTTP request inspection and mocking.
+  </Card>
+  <Card title="Events" icon="zap">
+    System bus event monitoring.
+  </Card>
+</CardGroup>
+
+## Advanced tools
+
+<CardGroup cols={3}>
+  <Card title="Components" icon="layers">
+    React component tree inspector.
+  </Card>
+  <Card title="Boot Analyzer" icon="power">
+    Startup timing breakdown.
+  </Card>
+  <Card title="Crash Analyzer" icon="skull">
+    Crash dump inspector.
+  </Card>
+  <Card title="Memory Profiler" icon="memory-stick">
+    Memory usage tracking.
+  </Card>
+  <Card title="Mod Manager" icon="package">
+    Plugin and mod system.
+  </Card>
+  <Card title="Supabase" icon="cloud">
+    Database connection debugger.
+  </Card>
+  <Card title="FakeMod" icon="gavel" href="/defdev/admin">
+    Test moderation actions locally without real effects.
+  </Card>
+  <Card title="Admin Tools" icon="shield" href="/defdev/admin">
+    Administrative testing utilities for crash triggers and system control.
+  </Card>
+</CardGroup>
+
+## Terminal commands
+
+| Command | Description |
+|---|---|
+| `help` | Show all available commands |
+| `clear` | Clear the terminal output |
+| `sysinfo` | Display system information |
+| `bugcheck <code>` | Trigger a test BSOD with code |
+| `crash [type]` | Force a crash screen |
+| `reboot` | Restart the system |
+| `shutdown` | Power off the system |
+| `ls [filter]` | List localStorage keys |
+| `get <key>` | Get a storage value |
+| `set <key> <value>` | Set a storage value |
+| `del <key>` | Delete a storage key |
+| `toast <type> <msg>` | Show a toast notification |
+| `status` | Show system status |
+| `queue` | Show pending commands |
+| `lockdown [protocol]` | Trigger lockdown mode |
+| `recovery` | Boot into recovery mode |
+
+See the [Terminal reference](/defdev/terminal) for the full command set.
+
+## FakeMod testing
+
+<Warning>
+  FakeMod actions are purely cosmetic and do not affect real user data or permissions.
+</Warning>
+
+FakeMod lets you test moderation UI without affecting real users. Trigger ban, warning, mute, and kick popups directly inside the DEF-DEV window for realistic testing.
+
+| Action | Description |
+|---|---|
+| **Ban** | Full ban popup |
+| **Warning** | Warning notification |
+| **Mute** | Mute indicator |
+| **Kick** | Session kick |
+
+See [Admin Tools](/defdev/admin) for FakeMod usage details.
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl+Shift+D` | Open DEF-DEV Console |
+| `Ctrl+L` | Clear console (when focused) |
+| `Tab` | Cycle through tabs |
+| `Escape` | Close DEF-DEV |
+| `↑` / `↓` | Navigate terminal history |

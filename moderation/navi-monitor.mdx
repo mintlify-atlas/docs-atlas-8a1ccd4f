@@ -1,0 +1,139 @@
+---
+title: "NAVI Monitor"
+description: "Real-time monitoring of NAVI bot activity, message filtering, autonomous responses, and lockout events for Urbanshade OS administrators."
+keywords: ["navi", "monitor", "bot", "filtering", "lockout", "moderation", "autonomous"]
+---
+
+# NAVI Monitor
+
+The NAVI Monitor gives admins real-time visibility into Urbanshade OS's automated systems — message filtering, threat detection, lockout events, and autonomous moderation responses.
+
+<Note>
+  **What is NAVI?** NAVI is Urbanshade OS's automated bot system. It handles broadcasts, filters messages to the Creator, manages announcements, and can trigger lockouts when it detects suspicious activity. Think of it as the facility's AI assistant and first line of defense.
+</Note>
+
+## Monitor features
+
+<CardGroup cols={2}>
+  <Card title="Message queue" icon="message-square">
+    View messages being processed by NAVI, including their priority levels and delivery status.
+  </Card>
+  <Card title="Filter statistics" icon="filter">
+    See how many messages NAVI has filtered, flagged, or allowed through since the last reset.
+  </Card>
+  <Card title="Response times" icon="clock">
+    Monitor NAVI's response latency and overall processing performance metrics.
+  </Card>
+  <Card title="Lockout events" icon="lock">
+    Track every time NAVI triggered a lockout for suspicious activity, with timestamps and reasons.
+  </Card>
+  <Card title="Processing status" icon="activity">
+    Real-time view of NAVI's processing pipeline, active jobs, and any bottlenecks.
+  </Card>
+</CardGroup>
+
+## Threat level system
+
+NAVI continuously calculates a threat level based on activity metrics measured in 5-minute windows. The threat level determines which automatic responses activate.
+
+| Threat level | Trigger condition | Description |
+|---|---|---|
+| Normal | Within baseline parameters | All systems operating normally |
+| Elevated | Activity slightly above average | Monitoring more closely |
+| Warning | 2x threshold | Protections may activate |
+| Critical | 5x threshold | NAVI begins warning top offenders |
+| Emergency | Lockdown multiplier reached | Full lockdown mode active |
+
+The three monitored metrics are:
+
+- **Signups** — New account registrations in the past 5 minutes (default threshold: configurable)
+- **Messages** — Total messages sent in the past 5 minutes
+- **Failed logins** — Failed authentication attempts in the past 5 minutes
+
+## Message filtering
+
+NAVI acts as a filter for messages sent to the Creator (Aswd). This protects the Creator's inbox from spam while ensuring genuine messages get through.
+
+| Sender type | Filtering behavior |
+|------------|-------------------|
+| VIP users | Messages bypass NAVI and go directly to Aswd |
+| Regular users | Messages are reviewed by NAVI before delivery |
+
+Messages reviewed by NAVI are evaluated against content rules. Flagged messages are held or discarded. Clean messages are delivered normally.
+
+## Autonomous responses
+
+NAVI can be configured to automatically take action when threat thresholds are crossed. These responses happen without requiring a human admin to be present.
+
+### Auto-moderation
+
+| Setting | When it activates | What it does |
+|---------|-------------------|--------------|
+| Auto-warn users | At 5x threshold | Issues automatic warnings to the top offenders |
+| Auto temp-ban | During emergencies | Temporarily bans the most active offenders |
+| Auto lockdown | At lockdown multiplier threshold | Triggers a full site lockdown |
+
+### Authority actions
+
+| Setting | When it activates | What it does |
+|---------|-------------------|--------------|
+| Auto-disable signups | At 2x signup threshold | Prevents new account registrations |
+| Auto read-only mode | At 2x message threshold | Prevents users from sending messages |
+| Auto VIP-only mode | During emergencies | Restricts access to VIP users and above |
+
+<Warning>
+  Autonomous responses are powerful and affect all users. Review your NAVI settings carefully before enabling them. Actions can be reversed from the monitor, but they take effect immediately.
+</Warning>
+
+## Understanding lockouts
+
+NAVI can automatically lock out individual users who trigger security thresholds:
+
+<AccordionGroup>
+  <Accordion title="Spam detection">
+    A user sending too many messages too quickly triggers rate-limit protection. NAVI locks the account temporarily to prevent flooding.
+  </Accordion>
+  <Accordion title="Suspicious patterns">
+    Behavior that matches known attack patterns — such as rapid repeated actions or systematic probing — triggers an automatic lockout.
+  </Accordion>
+  <Accordion title="Keyword triggers">
+    Messages containing flagged content may cause NAVI to lockout the sender pending admin review.
+  </Accordion>
+</AccordionGroup>
+
+Lockouts are temporary. Admins can review any lockout event in the monitor and lift it manually if the lockout was a false positive.
+
+## NAVI push notifications
+
+Admins can enable browser push notifications from NAVI to stay informed even when the moderation panel is not open.
+
+| Notification type | Triggers on |
+|---|---|
+| Critical alerts | Lockdowns and emergencies |
+| Warning alerts | Thresholds approaching critical levels |
+| Recovery alerts | When activity normalizes after an incident |
+
+Auto-messaging notifications include welcome messages for new users, degraded service notices during emergencies, and automated warning messages sent to flagged users.
+
+## Using the monitor
+
+<Steps>
+  <Step title="Open the moderation panel">
+    Navigate to `/moderation` and log in with an admin account.
+  </Step>
+  <Step title="Click the NAVI Monitor tab">
+    Select the **NAVI Monitor** tab from the panel navigation.
+  </Step>
+  <Step title="Review the live dashboard">
+    The dashboard shows the current threat level, real-time metrics (signups, messages, failed logins), recent autonomous actions, and filter statistics.
+  </Step>
+  <Step title="Investigate lockout events">
+    Click on any lockout event in the Recent Actions log to see the full details — trigger reason, affected user, and threat level at time of action.
+  </Step>
+  <Step title="Lift a lockout if needed">
+    If a lockout was a false positive, click the **Undo** button next to the action to reverse it. Add a note explaining why it was reversed.
+  </Step>
+  <Step title="Adjust settings">
+    Use the Detection & Response, Notifications, and Advanced sections to tune thresholds and toggle autonomous behaviors to match current conditions.
+  </Step>
+</Steps>

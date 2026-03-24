@@ -1,0 +1,116 @@
+---
+title: "Account Safety"
+description: "Keep your Urbanshade OS account secure with best practices for passwords, two-factor authentication, and session management."
+keywords: ["account", "safety", "security", "password", "2fa", "session"]
+---
+
+# Account safety
+
+Your Urbanshade OS account is your gateway to the facility. Keeping it secure protects your settings, cloud-synced data, and your reputation in the community.
+
+<Warning>
+  No one from Urbanshade OS — including Aswd and all admins — will **ever** ask for your password. If someone asks for it, they are attempting to steal your account. Report them immediately.
+</Warning>
+
+## Security best practices
+
+<CardGroup cols={2}>
+  <Card title="Strong password" icon="key">
+    Use a unique password with at least 12 characters. Mix uppercase letters, lowercase letters, numbers, and symbols. Never reuse a password from another site.
+  </Card>
+  <Card title="Two-factor authentication" icon="fingerprint">
+    Enable 2FA in your account settings. Even if your password is compromised, 2FA prevents unauthorized access by requiring a second verification step.
+  </Card>
+  <Card title="Privacy settings" icon="eye-off">
+    Review who can see your profile and activity. Control your visibility in account settings to limit exposure to unwanted contact.
+  </Card>
+  <Card title="Session management" icon="lock">
+    Always log out on shared or public devices. Periodically review your active sessions and revoke any you do not recognize.
+  </Card>
+</CardGroup>
+
+## Password recommendations
+
+This is a simulation environment, so the stakes are lower than a banking app — but it is still good practice to use a secure, unique password.
+
+- Use at least 12 characters
+- Avoid using your real name, username, or common words
+- Never use a password you have already used on another service
+- Consider using a password manager to generate and store strong passwords
+- Change your password if you believe it may have been exposed
+
+<Note>
+  Urbanshade OS passwords are hashed and stored securely via Supabase. Your plaintext password is never stored.
+</Note>
+
+## Two-factor authentication and session management
+
+**Enabling 2FA** adds an extra layer of protection. Even if an attacker gets your password, they cannot access your account without also completing the second factor. Enable 2FA in **Settings → Account → Security**.
+
+**Session management** lets you see all devices and browsers currently logged into your account. If you see a session you do not recognize:
+
+<Steps>
+  <Step title="Go to account settings">
+    Open **Settings → Account → Active Sessions**.
+  </Step>
+  <Step title="Review active sessions">
+    Check the list of active sessions for any unfamiliar devices, locations, or browsers.
+  </Step>
+  <Step title="Revoke unknown sessions">
+    Click **Revoke** next to any session you do not recognize. This immediately logs out that session.
+  </Step>
+  <Step title="Change your password">
+    After revoking unknown sessions, change your password to prevent the same attacker from logging back in.
+  </Step>
+</Steps>
+
+## What data is stored
+
+Urbanshade OS stores the following data when you have a cloud account:
+
+| Data | Where it is stored | Notes |
+|------|--------------------|-------|
+| Username and display name | Supabase cloud database | Visible to other users |
+| Email address | Supabase auth | Used for login only, not displayed |
+| Avatar image | Supabase storage | Optional |
+| Settings and preferences | Supabase cloud database | Synced across devices |
+| Desktop layout and icons | Supabase cloud database | Part of cloud sync |
+| Installed apps | Supabase cloud database | Part of cloud sync |
+| Session data (no account) | Browser `localStorage` | Cleared when you clear browser data |
+
+<Note>
+  If you are not logged in, all data is stored only in your browser's `localStorage`. This data does not persist across different browsers or devices and is lost when you clear your browser storage.
+</Note>
+
+## Recognizing threats
+
+<AccordionGroup>
+  <Accordion title="Phishing attempts">
+    Be wary of links promising "free VIP status" or "admin access." Real staff never send external links asking you to verify your account or claim a reward. If a link looks suspicious, do not click it — report it to an admin.
+  </Accordion>
+  <Accordion title="Impersonation">
+    Anyone pretending to be Aswd or an admin without the proper system badge is fake. Real staff always have their badge visible. Check the badge before trusting any authority claim.
+  </Accordion>
+  <Accordion title="Suspicious account activity">
+    If you notice unfamiliar logins, settings changes you did not make, or messages you did not send, your account may have been compromised. Act immediately using the steps below.
+  </Accordion>
+</AccordionGroup>
+
+## If your account is compromised
+
+Act quickly. Every minute counts when an attacker has access to your account.
+
+<Steps>
+  <Step title="Change your password immediately">
+    Use a completely new password you have never used anywhere else. Make it long and complex.
+  </Step>
+  <Step title="Enable 2FA if not already enabled">
+    This prevents future unauthorized access even if your new password is later exposed.
+  </Step>
+  <Step title="Revoke all active sessions">
+    Go to **Settings → Account → Active Sessions** and revoke everything. This kicks out anyone currently logged in, including the attacker.
+  </Step>
+  <Step title="Contact an admin">
+    Message a verified admin (check their badge) to let them know what happened. They can help investigate and take additional steps to secure your account.
+  </Step>
+</Steps>

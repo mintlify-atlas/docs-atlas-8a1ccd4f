@@ -1,0 +1,201 @@
+---
+title: UUR packages
+description: Create and publish packages for the UrbanShade User Repository — the in-simulation package manager.
+keywords: ['uur', 'packages', 'repository', 'publish', 'install', 'manifest']
+---
+
+The **UrbanShade User Repository (UUR)** is the in-simulation package repository for community-created apps, themes, and extensions. It supports one-click installation, GitHub-sourced packages, and a moderated submission workflow.
+
+<Note>
+  UUR is an in-simulation feature. Packages are conceptual within the Urbanshade OS experience. The submission system uses Supabase for real review tracking.
+</Note>
+
+## Package categories
+
+| Category | Description | Examples |
+|----------|-------------|----------|
+| `app` | General applications | Hello World, System Info |
+| `utility` | Utility tools | File Cleaner, Password Generator |
+| `theme` | Visual themes | Dark Neon Theme |
+| `extension` | OS extensions | Custom widgets |
+| `game` | Games and entertainment | Mini Games Pack |
+| `productivity` | Work tools | Spreadsheet, Calendar |
+| `security` | Security tools | VPN, Firewall |
+| `system` | System management | Task Manager, Settings |
+
+## Package structure
+
+A UUR package is a directory containing at minimum a manifest file and an entry point:
+
+```text
+my-awesome-app/
+├── uur-manifest.json   ← Package metadata (required)
+├── app.html            ← Entry point (required)
+├── README.md           ← Documentation
+└── assets/             ← Optional static assets
+```
+
+## Package manifest
+
+Every package requires a `uur-manifest.json` file at the repository root:
+
+```json
+{
+  "name": "my-awesome-app",
+  "version": "1.0.0",
+  "id": "my-awesome-app",
+  "description": "A cool app for Urbanshade OS",
+  "author": "YourUsername",
+  "category": "utility",
+  "entry": "app.html",
+  "permissions": ["filesystem", "notifications"],
+  "tags": ["productivity", "tools"]
+}
+```
+
+### Manifest fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Display name |
+| `version` | string | Yes | Semantic version (e.g. `1.0.0`) |
+| `id` | string | No | Package ID (defaults to slug of `name`) |
+| `description` | string | Yes | Short description shown in UUR |
+| `author` | string | No | Author username |
+| `category` | UURCategory | No | One of the category IDs above |
+| `entry` | string | No | Entry HTML file (defaults to `app.html`) |
+| `permissions` | string[] | No | Requested permissions |
+| `tags` | string[] | No | Search tags |
+
+## UURPackage interface
+
+The internal package record used by `uurRepository.ts`:
+
+```typescript
+export interface UURPackage {
+  id: string;
+  name: string;
+  description: string;
+  version: string;
+  author: string;
+  category: UURCategory;
+  downloads: number;
+  stars: number;
+  githubUrl?: string;
+  isOfficial: boolean;
+  isFeatured?: boolean;
+  listSource?: string;
+  dependencies?: string[];
+  tags?: string[];
+}
+```
+
+## Entry point format
+
+The entry file (`app.html` by default) is a self-contained HTML string rendered inside a sandboxed container. It is sanitized using [DOMPurify](https://github.com/cure53/DOMPurify) before display.
+
+```html
+<!-- app.html -->
+<div style="padding: 20px; background: #1a1a2e; color: white; font-family: monospace; height: 100%;">
+  <h1 style="color: #00ff88;">My Awesome App</h1>
+  <p style="color: #a0aec0;">This is my UUR package.</p>
+</div>
+```
+
+<Warning>
+  `<script>`, `<iframe>`, `<form>`, and event handler attributes (`onclick`, `onerror`, etc.) are stripped by DOMPurify on install. Do not rely on JavaScript in UUR packages.
+</Warning>
+
+## Installing from GitHub
+
+The UUR Manager app can install packages directly from a public GitHub repository. The install flow:
+
+<Steps>
+  <Step title="Fetch the manifest">
+    The UUR Manager fetches `uur-manifest.json` from the repository root on `main` or `master`.
+  </Step>
+  <Step title="Fetch the entry file">
+    The entry file specified in `manifest.entry` (default `app.html`) is fetched from the same branch.
+  </Step>
+  <Step title="Sanitize and store">
+    The HTML is sanitized with DOMPurify and stored in `localStorage` under `urbanshade_uur_github_apps`.
+  </Step>
+  <Step title="Register the package">
+    A `UURPackage` record is created and added to the installed apps list in `localStorage`.
+  </Step>
+</Steps>
+
+## Custom package lists
+
+Users can add custom package lists pointing to GitHub repositories that expose a `uur-manifest.json` with a `packages` array:
+
+```json
+{
+  "name": "My Package List",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "id": "my-tool",
+      "name": "My Tool",
+      "description": "A useful tool",
+      "version": "1.0.0",
+      "author": "YourUsername",
+      "category": "utility"
+    }
+  ]
+}
+```
+
+## Submission workflow
+
+<Steps>
+  <Step title="Create your package">
+    Build your app following the package structure above. Test it locally by loading the HTML in a browser.
+  </Step>
+  <Step title="Push to GitHub">
+    Publish your package as a public GitHub repository with `uur-manifest.json` and your entry file at the root.
+  </Step>
+  <Step title="Submit via UUR Manager">
+    Open the **UUR Manager** app in Urbanshade OS. Navigate to **Submit** and enter your GitHub repository URL, package name, and description.
+  </Step>
+  <Step title="Await review">
+    Submissions are reviewed by the moderation team. Status is tracked in Supabase and reflected in the UUR Manager as `pending`, `approved`, or `denied`.
+  </Step>
+</Steps>
+
+## Package repository API
+
+Key functions exported from `src/lib/uurRepository.ts`:
+
+```typescript
+import {
+  getAllPackages,
+  getFeaturedPackages,
+  getPackagesByCategory,
+  installUURApp,
+  uninstallUURApp,
+  isUURAppInstalled,
+  getInstalledUURApps,
+  searchPackages,
+  installFromGithub,
+  addCustomList,
+  removeCustomList,
+} from "@/lib/uurRepository";
+
+// Search packages by name, description, author, or tag
+const results = searchPackages("system");
+
+// Install a package from the official registry
+installUURApp("system-info");
+
+// Install directly from GitHub
+const result = await installFromGithub(
+  "https://github.com/youruser/your-uur-app",
+  (message) => console.log(message) // optional progress callback
+);
+
+// Check if a package is installed
+if (isUURAppInstalled("system-info")) {
+  console.log("Installed!");
+}
+```

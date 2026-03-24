@@ -1,0 +1,136 @@
+---
+title: Terminal commands
+description: Built-in terminal commands and the Terminal Scripts system in Urbanshade OS.
+keywords: ['terminal', 'commands', 'cli', 'shell', 'scripts']
+---
+
+The terminal app provides a simulated shell environment with a built-in command set and a script runner for saving and replaying multi-command sequences.
+
+## Built-in commands
+
+| Command | Description | Usage | Example |
+|---------|-------------|-------|---------|
+| `help` | Display available commands | `help [command]` | `help cd` |
+| `ls` / `dir` | List directory contents | `ls [path]` | `ls /home/user/documents` |
+| `cd` | Change current directory | `cd <path>` | `cd /system/config` |
+| `cat` | Display file contents | `cat <filename>` | `cat readme.txt` |
+| `mkdir` | Create a new directory | `mkdir <dirname>` | `mkdir projects` |
+| `rm` | Remove files or directories | `rm [-r] <path>` | `rm -r old_folder` |
+| `echo` | Print text to terminal | `echo <text>` | `echo Hello World` |
+| `clear` | Clear terminal screen | `clear` | `clear` |
+| `whoami` | Display current user | `whoami` | `whoami` |
+| `sudo` | Execute command as admin | `sudo <command>` | `sudo reboot` |
+
+## Terminal Scripts system
+
+The script system (`src/lib/terminalScripts.ts`) lets you save, load, and run multi-command sequences. Scripts are persisted to `localStorage` under the key `urbanshade_terminal_scripts`.
+
+### TerminalScript interface
+
+```typescript
+// src/lib/terminalScripts.ts
+
+export interface TerminalScript {
+  id: string;           // Unique ID (auto-generated as script_<timestamp>)
+  name: string;         // Display name
+  description?: string; // Optional description
+  commands: string[];   // Array of commands to execute in sequence
+  createdAt: string;    // ISO timestamp
+  lastRun?: string;     // Last execution timestamp
+  runCount: number;     // Times executed
+}
+```
+
+### Script API
+
+```typescript
+import {
+  getScripts,
+  saveScript,
+  updateScript,
+  deleteScript,
+  markScriptRun,
+  getScript
+} from "@/lib/terminalScripts";
+
+// Get all saved scripts (returns built-in defaults if none saved)
+const scripts = getScripts();
+
+// Save a new script
+const newScript = saveScript({
+  name: "Morning Routine",
+  description: "Run diagnostics and check status",
+  commands: ["neofetch", "uptime", "whoami"]
+});
+
+// Update an existing script
+updateScript(newScript.id, {
+  name: "Updated Routine",
+  commands: ["neofetch", "uptime", "whoami", "echo Done!"]
+});
+
+// Mark a script as run (increments runCount, sets lastRun)
+markScriptRun(newScript.id);
+
+// Delete a script
+deleteScript(newScript.id);
+
+// Get a single script by ID
+const script = getScript(newScript.id);
+```
+
+### Default scripts
+
+If no scripts are saved, `getScripts()` returns two built-in defaults:
+
+```typescript
+// "System Check" — run basic system diagnostics
+{
+  id: "system-check",
+  name: "System Check",
+  description: "Run basic system diagnostics",
+  commands: ["neofetch", "uptime", "whoami"]
+}
+
+// "Dev Setup" — enable developer mode and open DEF-DEV
+{
+  id: "dev-setup",
+  name: "Dev Setup",
+  description: "Enable developer mode and open DEF-DEV",
+  commands: ["sudo set developer_mode true", "echo \"Dev mode enabled\""]
+}
+```
+
+<Tip>
+  Scripts are stored in `localStorage` under the key `urbanshade_terminal_scripts`. You can inspect or clear them directly in your browser's DevTools under **Application → Local Storage**.
+</Tip>
+
+## Adding custom commands
+
+The terminal processes commands inside the terminal app component. To add a new command:
+
+<Steps>
+  <Step title="Locate the command handler">
+    Open `src/components/apps/Terminal.tsx` (or the equivalent terminal component). Commands are dispatched via a `switch` or `if`/`else` chain on the parsed command string.
+  </Step>
+  <Step title="Add your command case">
+    ```typescript
+    case "hello":
+      return `Hello, ${args[0] || "world"}!`;
+    ```
+  </Step>
+  <Step title="Register it in the help output">
+    Add an entry to the help command output so users can discover it:
+    ```typescript
+    case "help":
+      return [
+        // ... existing commands ...
+        "hello <name>  — Say hello",
+      ].join("\n");
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  The virtual file system (`useVirtualFileSystem`) is available in the terminal context, so file-related commands can read and write to the simulated filesystem.
+</Note>

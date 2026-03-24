@@ -1,0 +1,144 @@
+---
+title: "BIOS & Recovery"
+description: "How to access and configure the Urbanshade OS BIOS, enter Recovery Mode, boot into Safe Mode, and use recovery options."
+keywords: ["bios", "recovery", "safe mode", "factory reset", "boot", "F2", "F8", "DEL", "password reset"]
+---
+
+Urbanshade OS simulates a realistic BIOS/UEFI interface and recovery environment. This page covers how to enter each mode and what you can do once inside.
+
+---
+
+## Entering the BIOS
+
+Press `DEL` at any point during the **POST screen** (the screen that appears immediately after the boot animation starts).
+
+The BIOS provides low-level system configuration. All settings persist across sessions in your browser's `localStorage`.
+
+<Tip>
+  If you miss the POST screen, let the OS finish booting and then use **Start Menu → Power → Restart → Enter BIOS** to reboot directly into the BIOS.
+</Tip>
+
+### BIOS settings reference
+
+| Setting | Default | Options | Description |
+|---|---|---|---|
+| Boot Order | Standard | Standard, Minimal, Complete | Controls which installation profile loads on startup |
+| Boot Password | Disabled | Enabled / Disabled | Require a password before the OS loads. Separate from your login password |
+| Boot Animation | Enabled | Enabled / Disabled | Show or skip the animated boot splash screen |
+| Secure Boot | Enabled | Enabled / Disabled | Verify system integrity on every startup |
+| POST Diagnostics | Quick | Quick / Full / Skip | Detail level for the hardware self-test on each boot |
+| Recovery Partition | Enabled | Enabled / Disabled | Must be enabled to use F2 Recovery Mode |
+| Safe Mode Access | Enabled | Enabled / Disabled | Must be enabled to use F8 Safe Mode boot |
+| System Clock | Auto | Auto / Manual | Controls whether the system clock syncs automatically |
+
+<Warning>
+  Disabling **Recovery Partition** prevents access to Recovery Mode. If you forget your password with Recovery Partition disabled and Boot Password enabled, you will need to clear your browser's `localStorage` manually to regain access.
+</Warning>
+
+---
+
+## Recovery mode
+
+Press `F2` during the boot sequence. Watch for the **Press F2 for Recovery** prompt that appears during POST.
+
+**Recovery Partition** must be set to **Enabled** in BIOS for this to work.
+
+<Steps>
+  <Step title="Interrupt boot">
+    Press `F2` when you see the POST screen. If you miss the prompt, restart and try again — the window is brief.
+  </Step>
+  <Step title="Choose a recovery option">
+    The Recovery Menu presents six options. Select the one that matches your situation.
+  </Step>
+  <Step title="Authenticate">
+    Certain options require your current login password or your BIOS password before proceeding.
+  </Step>
+  <Step title="Confirm the action">
+    Read the confirmation dialog carefully. **Factory Reset** requires you to confirm twice.
+  </Step>
+  <Step title="Wait for reboot">
+    The system restarts automatically after the recovery action completes. Your changes take effect on the next boot.
+  </Step>
+</Steps>
+
+### Recovery options
+
+<CardGroup cols={2}>
+  <Card title="Reset password" icon="key">
+    Clear your boot or login password. Useful if you are locked out of your account.
+  </Card>
+  <Card title="System repair" icon="wrench">
+    Fix corrupted settings and system state without losing your data.
+  </Card>
+  <Card title="Factory reset" icon="trash-2">
+    Wipe everything and return to a fresh install state. Clears all `localStorage` data.
+  </Card>
+  <Card title="Boot logs" icon="file-text">
+    View detailed startup diagnostic logs from the last boot sequence.
+  </Card>
+  <Card title="Recovery terminal" icon="terminal">
+    A minimal command-line environment for manual recovery operations.
+  </Card>
+  <Card title="Export data" icon="download">
+    Save a copy of your settings and data before performing a destructive operation.
+  </Card>
+</CardGroup>
+
+<Warning>
+  **Factory Reset** permanently deletes all `localStorage` data — your account, installed packages, settings, desktop layout, and saved files. This action cannot be undone. Use **Export Data** first if you want to preserve anything.
+</Warning>
+
+---
+
+## Safe mode
+
+Press `F8` during the boot sequence to boot into Safe Mode.
+
+**Safe Mode Access** must be set to **Enabled** in BIOS for this to work.
+
+Safe Mode loads the OS with a minimal feature set to help you isolate and fix problems. It disables themes, widgets, network sync, and non-essential apps so you can access **Settings** and **DEF-DEV** without interference from installed packages or custom configuration.
+
+### What works in safe mode
+
+| Feature | Available |
+|---|---|
+| Desktop & taskbar | Yes |
+| Start menu | Yes (limited) |
+| Settings | Yes — full access |
+| DEF-DEV console | Yes — full access |
+| Essential apps | Yes |
+| All installed apps | No |
+| Downloadable apps | No |
+| Theme engine | No — uses default theme |
+| Widgets | No |
+| Supabase / network sync | No |
+| Boot animations | No — skipped for fast boot |
+
+<Tip>
+  Use Safe Mode to diagnose issues caused by a buggy installed package or a broken theme. Uninstall the problematic package from Safe Mode, then reboot normally.
+</Tip>
+
+---
+
+## Recovering from a forgotten BIOS password
+
+If you enabled Boot Password and can no longer remember it:
+
+<Steps>
+  <Step title="Enter Recovery Mode">
+    Press `F2` during the POST screen. Recovery Mode does not require the BIOS password.
+  </Step>
+  <Step title="Select Reset Password">
+    Choose **Reset Password** from the recovery menu.
+  </Step>
+  <Step title="Confirm">
+    Confirm the action. Both your login password and BIOS password are cleared.
+  </Step>
+  <Step title="Reboot">
+    The system reboots to the login screen. You can set a new password from **Settings → Security**.
+  </Step>
+</Steps>
+
+<Info>
+  If Recovery Partition is disabled in BIOS, Recovery Mode is unavailable. In this case you must clear your browser's `localStorage` directly to reset all system data.
+</Info>

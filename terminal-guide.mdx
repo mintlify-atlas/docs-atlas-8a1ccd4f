@@ -1,0 +1,171 @@
+---
+title: Terminal Guide
+description: Complete command-line reference for the Urbanshade OS terminal — basic commands, file operations, system commands, networking, and hidden secrets.
+keywords: [terminal, command line, cli, commands, bash, shell, scripting]
+---
+
+The Urbanshade OS terminal gives you direct, low-level control over the facility. Whether you're navigating the file system, monitoring system processes, or probing the network, every operation runs through a familiar shell interface. Type commands after the `$` prompt and press **Enter** to execute.
+
+```bash
+user@urbanshade:~$ _
+```
+
+> This is your terminal prompt. Type commands after the `$` symbol and press Enter.
+
+## Command categories
+
+<CardGroup cols={5}>
+  <Card title="Basic" icon="circle-question">
+    Orientation and general-purpose utilities.
+  </Card>
+  <Card title="File System" icon="folder">
+    Navigate and manage files and directories.
+  </Card>
+  <Card title="System" icon="microchip">
+    Processes, memory, disk, and power controls.
+  </Card>
+  <Card title="Network" icon="network-wired">
+    Connectivity, interfaces, and data transfer.
+  </Card>
+  <Card title="Secret" icon="sparkles">
+    Hidden commands for the curious.
+  </Card>
+</CardGroup>
+
+## Basic commands
+
+General-purpose commands for orientation and everyday use.
+
+| Command | Args | Description |
+| --- | --- | --- |
+| `help` | | Show all available commands |
+| `clear` | | Clear the terminal screen |
+| `status` | | Display current system status |
+| `whoami` | | Show current user identity |
+| `date` | | Display current date and time |
+| `echo` | `[text]` | Print text to the terminal |
+| `history` | | Show command history |
+
+## File system commands
+
+Navigate directories and manage files.
+
+| Command | Args | Description |
+| --- | --- | --- |
+| `ls` | | List files in current directory |
+| `ls -la` | | List all files with details |
+| `cd` | `[dir]` | Change directory |
+| `cd ..` | | Go up one directory |
+| `pwd` | | Print working directory path |
+| `cat` | `[file]` | Display file contents |
+| `mkdir` | `[name]` | Create a new directory |
+| `rm` | `[file]` | Remove a file |
+| `cp` | `[src] [dst]` | Copy a file |
+| `mv` | `[src] [dst]` | Move or rename a file |
+
+## System commands
+
+Monitor and control processes, memory, disk, and power state.
+
+| Command | Args | Description |
+| --- | --- | --- |
+| `neofetch` | | Show system information in style |
+| `uptime` | | Display system uptime |
+| `ps` | | List running processes |
+| `kill` | `[pid]` | Terminate a process by ID |
+| `top` | | Interactive process viewer |
+| `free` | | Show memory usage |
+| `df` | | Show disk space usage |
+| `reboot` | | Restart the system |
+| `shutdown` | | Power off the system |
+
+## Network commands
+
+Test connectivity, inspect interfaces, and transfer data.
+
+| Command | Args | Description |
+| --- | --- | --- |
+| `ping` | `[host]` | Test network connectivity |
+| `ifconfig` | | Show network interfaces |
+| `netstat` | | Display network statistics |
+| `curl` | `[url]` | Fetch content from a URL |
+| `wget` | `[url]` | Download a file from a URL |
+
+## Secret commands
+
+A handful of hidden commands for the curious operator.
+
+| Command | Args | Description |
+| --- | --- | --- |
+| `secret` | | Opens something special... |
+| `matrix` | | Feel like Neo |
+| `panic` | | Don't actually panic |
+| `fortune` | | Wisdom from the deep |
+| `cow` | `[text]` | Moo |
+
+## Usage examples
+
+<Tabs>
+  <Tab title="File system">
+    ```bash
+    $ pwd
+    /home/user
+
+    $ ls
+    documents  downloads  pictures  notes.txt
+
+    $ cd documents
+    $ ls
+    report.md  specs.pdf  logs/
+
+    $ cat report.md
+    # Monthly Report
+    Facility status: Normal...
+    ```
+  </Tab>
+  <Tab title="System administration">
+    ```bash
+    $ neofetch
+     ╔══════════════╗   user@urbanshade
+     ║  URBANSHADE  ║   OS: UrbanShade OS v3.6.1
+     ║     OS       ║   Uptime: 2h 47m
+     ╚══════════════╝   Shell: ush 1.0
+
+    $ ps
+      PID  NAME              STATUS
+      001  system-monitor    running
+      002  terminal          running
+      003  file-explorer     running
+
+    $ kill 003
+    Process 003 (file-explorer) terminated.
+    ```
+  </Tab>
+  <Tab title="Networking">
+    ```bash
+    $ ping facility.local
+    PING facility.local: 64 bytes from 192.168.1.1
+    time=4ms  ttl=64
+
+    $ ifconfig
+    eth0: flags=UP  inet 192.168.1.42  netmask 255.255.255.0
+
+    $ curl https://api.facility.local/status
+    {"status": "online", "uptime": "2h 47m"}
+    ```
+  </Tab>
+</Tabs>
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+| --- | --- |
+| `↑` / `↓` | Navigate command history |
+| `Tab` | Auto-complete commands and paths |
+| `Ctrl+C` | Cancel the current command |
+| `Ctrl+L` | Clear the screen |
+| `Ctrl+U` | Clear the current line |
+
+<Tip>
+  Type `help` in the terminal for the most up-to-date list of all available commands. The terminal also supports tab completion — press **Tab** after typing a partial command or path.
+</Tip>

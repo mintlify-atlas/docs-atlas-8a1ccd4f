@@ -1,0 +1,90 @@
+---
+title: "Diagnostics"
+description: "Real-time system health monitoring, performance metrics, and diagnostic utilities for Urbanshade OS."
+keywords: ["diagnostics", "health", "performance", "memory", "storage", "def-dev"]
+---
+
+The Diagnostics tool is a real-time system health monitor built into DEF-DEV. It surfaces insights into localStorage usage, browser performance, memory consumption, and system state — and runs automated health checks to catch common issues before they become crashes.
+
+## Accessing diagnostics
+
+<Steps>
+  <Step title="Open DEF-DEV">
+    Navigate to `/def-dev` or press `Ctrl+Shift+D`.
+  </Step>
+  <Step title="Open the Diagnostics tab">
+    Click **Diagnostics** in the navigation sidebar.
+  </Step>
+  <Step title="Run health checks">
+    View real-time metrics and click **Run Health Checks** to validate system state.
+  </Step>
+  <Step title="Export a report">
+    Click **Export Report** to save a diagnostic snapshot as a JSON file.
+  </Step>
+</Steps>
+
+## Available metrics
+
+### Storage usage
+
+- Total localStorage entries
+- Storage size in bytes/KB/MB
+- Largest entries by size
+- Quota usage percentage
+
+### Memory stats
+
+- JS heap size used
+- Total JS heap size
+- Heap limit
+- Memory pressure indicator
+
+### Performance
+
+- Page load time
+- Time to interactive
+- DOM content loaded
+- Resource timing
+
+### System state
+
+- Active windows count
+- Registered event listeners
+- Console log count
+- Error count
+
+## Health checks
+
+The diagnostics tool runs a set of automated checks against live system state:
+
+| Check | Status indicator | Description |
+|---|---|---|
+| Storage Integrity | Pass / Fail | Validates all JSON entries in localStorage can be parsed |
+| Admin Account Valid | Pass / Fail | Checks admin account exists and has required fields |
+| Settings Schema | Pass / Fail | Validates system settings match expected schema |
+| Storage Quota | Pass / Warn | Warns if localStorage usage exceeds 80% of quota |
+| Memory Pressure | Pass / Warn | Alerts if JS heap usage is critically high |
+
+## Network inspection
+
+The Diagnostics tab also surfaces HTTP request activity from the OS:
+
+- Outbound requests with method, URL, and status code
+- Failed requests highlighted in red
+- Request/response timing
+
+## System events
+
+The Events panel shows the system bus event stream in real time — equivalent to subscribing to `systemBus.onAny()`. Useful for tracing event flow without writing code.
+
+See the [API reference](/defdev/api) for details on the system bus.
+
+## Terminal commands
+
+```bash
+$ diag            # Run full diagnostics
+$ diag storage    # Storage diagnostics only
+$ diag memory     # Memory diagnostics only
+$ diag health     # Run health checks
+$ diag export     # Export diagnostic report
+```

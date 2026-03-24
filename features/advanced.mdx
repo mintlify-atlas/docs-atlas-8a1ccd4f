@@ -1,0 +1,176 @@
+---
+title: "Advanced Features"
+description: "Deep dive into BIOS settings, Recovery Mode, Safe Mode, crash codes, system states, and the SystemBus API in Urbanshade OS."
+keywords: ["bios", "recovery mode", "safe mode", "advanced", "crash", "bugcheck", "systembus", "developer"]
+---
+
+This page covers the power-user and developer-facing internals of Urbanshade OS: BIOS configuration, recovery tools, safe mode, every bugcheck code, and the SystemBus API.
+
+<Warning>
+  All crash screens, system states, and hardware interfaces are simulated. No real hardware is affected. The worst outcome is a cleared `localStorage`.
+</Warning>
+
+---
+
+## BIOS settings
+
+Press `DEL` during the POST boot screen to enter the BIOS.
+
+The BIOS provides low-level system configuration. Settings persist across sessions via `localStorage`.
+
+| Setting | Default | Options | Description |
+|---|---|---|---|
+| Boot Order | Standard | Standard, Minimal, Complete | Controls which installation profile loads |
+| Boot Password | Disabled | Enabled / Disabled | Require a password before the OS loads |
+| Boot Animation | Enabled | Enabled / Disabled | Show or skip the boot splash screen |
+| Secure Boot | Enabled | Enabled / Disabled | Verify system integrity on startup |
+| POST Diagnostics | Quick | Quick / Full / Skip | Hardware self-test detail level |
+| Recovery Partition | Enabled | Enabled / Disabled | Allow F2 recovery access |
+| Safe Mode Access | Enabled | Enabled / Disabled | Allow F8 safe mode boot |
+| System Clock | Auto | Auto / Manual | Time source configuration |
+
+<Tip>
+  If you set a BIOS password and forget it, use Recovery Mode (`F2`) to reset it. The BIOS password is separate from your login password.
+</Tip>
+
+For a more detailed walkthrough of each BIOS setting and how to enter Recovery Mode, see [BIOS & Recovery](/features/bios-recovery).
+
+---
+
+## Recovery mode
+
+Press `F2` during the boot sequence to enter Recovery Mode.
+
+<Steps>
+  <Step title="Enter recovery">
+    Press `F2` during boot. Watch for the **Press F2 for Recovery** prompt during POST. Recovery Partition must be enabled in BIOS.
+  </Step>
+  <Step title="Choose an option">
+    Select from the recovery menu: Reset Password, System Repair, Factory Reset, Boot Logs, Recovery Terminal, or Export Data.
+  </Step>
+  <Step title="Authenticate">
+    Some options require your current password or BIOS password to proceed.
+  </Step>
+  <Step title="Confirm and execute">
+    Confirm the selected action. Factory Reset requires double confirmation — it wipes all data.
+  </Step>
+  <Step title="Reboot">
+    The system restarts automatically. Changes take effect on the next boot cycle.
+  </Step>
+</Steps>
+
+### Recovery options
+
+| Option | Description |
+|---|---|
+| Reset Password | Clear your boot and login password |
+| System Repair | Fix corrupted settings and system state |
+| Factory Reset | Wipe everything — clears all `localStorage` data |
+| Boot Logs | View startup diagnostic logs |
+| Recovery Terminal | Command-line recovery tools |
+| Export Data | Save settings before performing a reset |
+
+<Warning>
+  **Factory Reset** permanently deletes all `localStorage` data including your account, settings, installed packages, and desktop layout. This cannot be undone.
+</Warning>
+
+---
+
+## Safe mode
+
+Press `F8` during the boot sequence to enter Safe Mode.
+
+Safe Mode boots with minimal features for troubleshooting. Safe Mode Access must be enabled in BIOS.
+
+| Feature | Normal mode | Safe mode | Notes |
+|---|:---:|:---:|---|
+| Desktop & taskbar | Yes | Yes | Core UI loads in both modes |
+| Start menu | Yes | Yes | Available but limited in Safe Mode |
+| Settings | Yes | Yes | Full access for troubleshooting |
+| DEF-DEV access | Yes | Yes | Available for debugging |
+| All apps | Yes | No | Safe Mode loads essential apps only |
+| Downloadable apps | Yes | No | Disabled in Safe Mode |
+| Theme engine | Yes | No | Safe Mode uses the default theme |
+| Widgets | Yes | No | Disabled to reduce complexity |
+| Network features | Yes | No | Supabase sync disabled |
+| Boot animations | Yes | No | Skipped for fast boot |
+
+---
+
+## Bugcheck reference
+
+Complete reference of all 12 simulated bugcheck (BSOD) error codes. These are cosmetic — click **Reboot Now** to recover from any crash screen.
+
+You can trigger bugchecks via the **System Crash** app, the `panic` terminal command, or the Admin Panel.
+
+| Error code | Stop code | Trigger | Severity |
+|---|---|---|---|
+| `IRQL_NOT_LESS_OR_EQUAL` | 0x0000000A | Memory access violation | Critical |
+| `KERNEL_DATA_INPAGE_ERROR` | 0x0000007A | Disk read failure | Critical |
+| `CRITICAL_PROCESS_DIED` | 0x000000EF | Core process terminated | Critical |
+| `KMODE_EXCEPTION_NOT_HANDLED` | 0x0000001E | Kernel exception | Critical |
+| `UNEXPECTED_KERNEL_MODE_TRAP` | 0x0000007F | CPU trap error | Critical |
+| `SYSTEM_SERVICE_EXCEPTION` | 0x0000003B | Unhandled app exception | High |
+| `MEMORY_MANAGEMENT` | 0x0000001A | Virtual memory error | High |
+| `PAGE_FAULT_IN_NONPAGED_AREA` | 0x00000050 | Invalid memory reference | High |
+| `DPC_WATCHDOG_VIOLATION` | 0x00000133 | Deferred procedure timeout | High |
+| `DRIVER_POWER_STATE_FAILURE` | 0x0000009F | Power state transition | Medium |
+| `WHEA_UNCORRECTABLE_ERROR` | 0x00000124 | Hardware abstraction error | Medium |
+| `CLOCK_WATCHDOG_TIMEOUT` | 0x00000101 | Processor timeout | Medium |
+
+---
+
+## System states
+
+The OS can enter several special states beyond normal operation.
+
+| State | Description | Trigger |
+|---|---|---|
+| Maintenance Mode | Limited access during simulated updates | Triggered by admins |
+| Lockdown Mode | Emergency lockdown with restricted access | Admins or NAVI AI |
+| Update Mode | Fake file names scroll by while "installing updates" | Admin Panel |
+| Crash Screen | Dramatic bugcheck display — click Reboot to recover | `panic` command, System Crash app |
+| Lock Screen | Session locked; re-enter password to continue | `Win+L`, taskbar, or auto-lock |
+| Logout | Returns to login screen; session data preserved | Start menu or terminal |
+
+---
+
+## SystemBus API
+
+The SystemBus is the internal event system for cross-component communication. Access it from the DEF-DEV Terminal or any injected script via `window.systemBus`.
+
+```javascript
+// Available SystemBus events
+TRIGGER_CRASH      // Trigger a bugcheck screen
+TRIGGER_REBOOT     // Initiate system reboot
+TRIGGER_SHUTDOWN   // Initiate shutdown sequence
+ENTER_RECOVERY     // Enter recovery mode
+OPEN_DEV_MODE      // Open DEF-DEV console
+LOCK_SCREEN        // Lock the session
+TOGGLE_START_MENU  // Toggle start menu
+
+// Usage
+window.systemBus.emit('TRIGGER_CRASH')
+```
+
+For the full SystemBus reference including event payloads and listener patterns, see the [developer documentation](/dev/index).
+
+---
+
+## DEF-DEV console tabs
+
+Enable Developer Mode in **Settings → Developer Options** to access the full debugging suite.
+
+| Tab | Description |
+|---|---|
+| Console | Real-time log capture |
+| Actions | Monitor system events with persistence and consent flows |
+| Storage | Inspect and edit `localStorage` values |
+| Terminal | Remote OS command execution with command queue |
+| Recovery | System snapshots |
+| Bugchecks | Crash history and replay |
+| Performance | Render metrics |
+| Network | Supabase request inspector |
+| Boot Analyzer | Startup profiling |
+
+See the full [DEF-DEV guide](/defdev/index) for detailed usage of each tab.

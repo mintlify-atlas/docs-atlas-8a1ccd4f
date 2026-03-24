@@ -1,0 +1,141 @@
+---
+title: Building apps
+description: Create desktop applications for Urbanshade OS with React components registered in appRegistry.tsx.
+keywords: ['apps', 'components', 'development', 'react', 'windows', 'appRegistry']
+---
+
+Every application in Urbanshade OS follows the same three-step pattern: create a React component, register it in `appRegistry.tsx`, and add a case to `WindowManager.tsx`.
+
+## Step-by-step guide
+
+<Steps>
+  <Step title="Create the component">
+    Create a React component in `src/components/apps/`. Every app receives a `windowId` prop identifying its window instance.
+
+    ```typescript
+    // src/components/apps/MyApp.tsx
+    import { useState } from "react";
+
+    interface MyAppProps {
+      windowId: string;
+    }
+
+    export const MyApp = ({ windowId }: MyAppProps) => {
+      const [count, setCount] = useState(0);
+
+      return (
+        <div className="h-full flex flex-col bg-background">
+          <div className="flex-1 p-4">
+            <h1 className="text-xl font-bold">My App</h1>
+            <p className="text-muted-foreground">Count: {count}</p>
+            <button
+              onClick={() => setCount(c => c + 1)}
+              className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded"
+            >
+              Increment
+            </button>
+          </div>
+        </div>
+      );
+    };
+    ```
+
+    <Tip>
+      Always use `h-full flex flex-col` as your root layout so the component fills the window correctly.
+    </Tip>
+  </Step>
+  <Step title="Register in appRegistry.tsx">
+    Add your app to the `createAppRegistry` factory in `src/lib/appRegistry.tsx`. This is the single source of truth for all app definitions.
+
+    ```typescript
+    // src/lib/appRegistry.tsx
+    import { Rocket } from "lucide-react";
+
+    export const createAppRegistry = (openAppById: (id: string) => void): App[] => [
+      // ... existing apps ...
+      {
+        id: "my-app",
+        name: "My App",
+        icon: <Rocket className="w-11 h-11" />,
+        run: () => openAppById("my-app"),
+        standardInclude: true  // or minimalInclude, or downloadable
+      },
+    ];
+    ```
+  </Step>
+  <Step title="Add window rendering">
+    Add a `case` to the switch statement in `src/components/WindowManager.tsx` so the window manager knows how to render your app.
+
+    ```typescript
+    // src/components/WindowManager.tsx — renderAppContent switch
+    case "my-app":
+      return <MyApp windowId={window.id} />;
+    ```
+  </Step>
+</Steps>
+
+## App interface
+
+The full `App` interface is defined in `src/types/window.ts`:
+
+```typescript
+import type { ReactNode } from "react";
+
+export interface App {
+  id: string;                  // Unique app identifier
+  name: string;                // Display name
+  icon: ReactNode;             // Lucide icon element (use w-11 h-11)
+  run: () => void;             // Opens the app window
+  minimalInclude?: boolean;    // Shown in minimal install
+  standardInclude?: boolean;   // Shown in standard install
+  downloadable?: boolean;      // Available in App Store
+  searchAliases?: string[];    // Search keywords
+}
+```
+
+## Visibility flags
+
+Exactly one visibility flag should be set per app:
+
+| Flag | Behaviour | Examples |
+|------|-----------|----------|
+| `minimalInclude` | Appears on the desktop in minimal and standard installs. Reserved for core system apps. | Terminal, Settings, File Explorer, Calculator |
+| `standardInclude` | Appears on the desktop only in standard installs. Used for facility-specific or social apps. | Cameras, Messages, Personnel Center |
+| `downloadable` | Does not appear by default. Users install it from the App Store. | Notepad, Paint, Dice Roller |
+
+## Search aliases
+
+Use `searchAliases` to make your app discoverable by alternate names in Global Search:
+
+```typescript
+{
+  id: "ucg",
+  name: "Untitled Card Game",
+  icon: <Spade className="w-11 h-11" />,
+  run: () => openAppById("ucg"),
+  downloadable: true,
+  searchAliases: ["UCG", "21", "twenty one", "blackjack", "card game"]
+}
+```
+
+## Design guidelines
+
+<Warning>
+  Never use hardcoded color classes like `bg-slate-900` or `text-white` in app components. Always use semantic design tokens so your app respects the active theme.
+</Warning>
+
+```typescript
+// Correct — uses design tokens
+<div className="bg-background text-foreground border-border">
+  <button className="bg-primary text-primary-foreground">
+    Click me
+  </button>
+</div>
+
+// Avoid — hardcoded colors break theme support
+<div className="bg-slate-900 text-white border-gray-700">
+  <button className="bg-cyan-500 text-black">
+    Click me
+  </button>
+</div>
+```

@@ -1,0 +1,225 @@
+---
+title: Theming & styling
+description: Create custom themes for Urbanshade OS using CSS custom properties, useThemeEngine, and the Theme Editor app.
+keywords: ['theming', 'styling', 'css', 'design tokens', 'dark mode', 'light mode', 'useThemeEngine']
+---
+
+Urbanshade OS uses CSS custom properties in HSL format as design tokens, applied through Tailwind semantic utility classes. All theming is managed by the `useThemeEngine` hook.
+
+## Design tokens
+
+Tokens are defined in `src/index.css` as CSS custom properties on `:root`:
+
+```css
+:root {
+  --background: 212 75% 4%;
+  --foreground: 192 100% 96%;
+  --primary: 186 100% 44%;
+  --primary-foreground: 210 100% 3%;
+  --accent: 186 100% 50%;
+  --muted: 210 30% 15%;
+  --glow: 186 100% 50%;
+  --secondary: 212 40% 10%;
+  --destructive: 0 84% 60%;
+  --border: 210 30% 18%;
+  --card: 212 60% 6%;
+  --popover: 212 60% 6%;
+  /* ... and more */
+}
+```
+
+Tailwind semantic classes like `bg-background`, `text-foreground`, and `border-border` reference these variables automatically.
+
+## Core color palette
+
+| Token | Tailwind class | Default HSL |
+|-------|---------------|-------------|
+| Background | `bg-background` | `212 75% 4%` |
+| Foreground | `text-foreground` | `192 100% 96%` |
+| Primary | `bg-primary` | `186 100% 44%` |
+| Accent | `bg-accent` | `186 100% 50%` |
+| Muted | `bg-muted` | `210 30% 15%` |
+| Secondary | `bg-secondary` | `212 40% 10%` |
+| Destructive | `bg-destructive` | `0 84% 60%` |
+| Glow | `--glow` CSS var | `186 100% 50%` |
+
+## Light and dark mode
+
+The `.light` class on `<html>` provides alternate token values:
+
+```css
+.light {
+  --background: 210 20% 98%;
+  --foreground: 212 75% 10%;
+  --primary: 186 100% 35%;
+  /* ... light mode overrides */
+}
+```
+
+Mode switching is handled by `useThemeEngine` and exposed in **Settings → Appearance**.
+
+## useThemeEngine hook
+
+`useThemeEngine` (in `src/hooks/useThemeEngine.ts`) is the central theming API. It manages the active theme, applies CSS variables to the document root, handles mode switching, and persists the user's selection to `localStorage`.
+
+```typescript
+import { useThemeEngine } from "@/hooks/useThemeEngine";
+
+const {
+  currentTheme,      // FullTheme object
+  currentThemeId,    // string ID
+  effectiveMode,     // "dark" | "light"
+  settings,          // ThemeSettings
+  allThemes,         // all built-in + custom themes
+  presets,           // THEME_PRESETS array
+
+  setTheme,          // (themeId: string) => void
+  updateSettings,    // (Partial<ThemeSettings>) => void
+  createTheme,       // (theme) => FullTheme
+  updateTheme,       // (id, updates) => void
+  deleteTheme,       // (id) => void
+  exportTheme,       // (id) => string | null
+  importTheme,       // (jsonString) => FullTheme | null
+  duplicateTheme,    // (id) => FullTheme | null
+} = useThemeEngine();
+```
+
+### ThemeColors interface
+
+A `FullTheme` contains `darkColors` (required) and optionally `lightColors`:
+
+```typescript
+export interface ThemeColors {
+  background: string;          // HSL without hsl() wrapper
+  foreground: string;
+  primary: string;
+  primaryForeground: string;
+  secondary: string;
+  secondaryForeground: string;
+  muted: string;
+  mutedForeground: string;
+  accent: string;
+  accentForeground: string;
+  destructive: string;
+  card: string;
+  cardForeground: string;
+  border: string;
+  // Urbanshade custom tokens
+  glass: string;
+  glassStrong: string;
+  glow: string;
+}
+
+export interface FullTheme {
+  id: string;
+  name: string;
+  author?: string;
+  description?: string;
+  darkColors: ThemeColors;
+  lightColors?: ThemeColors;   // Optional light mode override
+  settings?: Partial<ThemeSettings>;
+  createdAt?: string;
+}
+```
+
+## ThemeSettings
+
+Settings control blur, animations, mode, and fonts:
+
+```typescript
+export interface ThemeSettings {
+  blurIntensity: number;        // 0–24 (pixels)
+  enableAcrylic: boolean;
+  enableAnimations: boolean;
+  animationSpeed: "slow" | "normal" | "fast";
+  reduceMotion: boolean;
+  mode: "dark" | "light" | "auto";
+  autoModeStartHour: number;    // Hour to switch to light (auto mode)
+  autoModeEndHour: number;      // Hour to switch back to dark (auto mode)
+  fontFamily: string;
+  monoFontFamily: string;
+}
+```
+
+## Built-in theme presets
+
+Urbanshade OS ships with 15 built-in presets, exported as `THEME_PRESETS` from `useThemeEngine.ts`:
+
+| ID | Name | Description |
+|----|------|-------------|
+| `urbanshade-dark` | Urbanshade Dark | Default deep ocean tech theme |
+| `urbanshade-light` | Urbanshade Light | Light mode for day use |
+| `windows-11` | Windows 11 | Microsoft Fluent design inspired |
+| `macos` | macOS | Apple-inspired design |
+| `ubuntu` | Ubuntu | Ubuntu Linux inspired |
+| `scp-facility` | SCP Facility | Containment terminal green |
+| `hacker-mode` | Hacker Mode | Matrix-style green on black |
+| `synthwave` | Synthwave | Retro 80s pink and purple |
+| `nord` | Nord | Arctic north-bluish color palette |
+| `dracula` | Dracula | Dark theme for vampires |
+| `hadal-blacksite` | Hadal Blacksite | Deep-sea research facility aesthetic |
+| `navi-terminal` | NAVI Terminal | CRT green retro terminal vibes |
+| `pressure-industrial` | Pressure Industrial | Brutalist mechanical aesthetic |
+| `mantle-zone` | Mantle Zone | Hellish volcanic extraction zone |
+| `oxygen-gardens` | Oxygen Gardens | Bioluminescent alien flora aesthetic |
+
+## Theme Editor app
+
+The **Theme Editor** app (accessible via **Settings → Appearance**) provides a visual UI for creating custom themes by adjusting CSS variable values in real time. Custom themes are persisted to `localStorage` under the `custom_themes` key and are available immediately across the OS.
+
+## Creating a custom theme programmatically
+
+```typescript
+import { useThemeEngine } from "@/hooks/useThemeEngine";
+
+const { createTheme, setTheme } = useThemeEngine();
+
+const myTheme = createTheme({
+  name: "My Theme",
+  description: "A custom theme",
+  darkColors: {
+    background: "240 10% 8%",
+    foreground: "0 0% 95%",
+    primary: "270 80% 60%",
+    primaryForeground: "0 0% 100%",
+    secondary: "240 8% 14%",
+    secondaryForeground: "0 0% 95%",
+    muted: "240 8% 18%",
+    mutedForeground: "240 5% 55%",
+    accent: "270 80% 65%",
+    accentForeground: "0 0% 100%",
+    destructive: "0 84% 60%",
+    card: "240 10% 10%",
+    cardForeground: "0 0% 95%",
+    border: "240 8% 20%",
+    glass: "240 10% 8% / 0.7",
+    glassStrong: "240 10% 6% / 0.85",
+    glow: "270 80% 60%"
+  }
+});
+
+// Apply immediately
+setTheme(myTheme.id);
+```
+
+## Using tokens in components
+
+<Warning>
+  Never use hardcoded color classes like `bg-slate-900` or `text-white`. Always use semantic tokens to ensure your component respects the active theme.
+</Warning>
+
+```typescript
+// Correct
+<div className="bg-background text-foreground border border-border">
+  <button className="bg-primary text-primary-foreground hover:bg-primary/90">
+    Save
+  </button>
+</div>
+
+// Avoid
+<div className="bg-slate-900 text-white border-gray-700">
+  <button className="bg-cyan-500 text-black">
+    Save
+  </button>
+</div>
+```

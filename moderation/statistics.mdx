@@ -1,0 +1,112 @@
+---
+title: "Statistics Dashboard"
+description: "Analytics and insights about Urbanshade OS usage, moderation actions, and user activity for administrators."
+keywords: ["statistics", "analytics", "dashboard", "metrics", "moderation", "users"]
+---
+
+# Statistics dashboard
+
+The Statistics Dashboard gives admins a real-time overview of platform health, moderation activity, and user distribution. All data is live — no manual refresh required.
+
+<Warning>
+  The Statistics Dashboard is accessible only to users with Administrator or Creator privileges.
+</Warning>
+
+## Available metrics
+
+<CardGroup cols={2}>
+  <Card title="User growth" icon="users">
+    Track new signups, active users, and retention rates over time to understand how the community is growing.
+  </Card>
+  <Card title="Moderation metrics" icon="shield">
+    Warnings issued, bans enacted, kicks performed, and appeals processed — broken down by time period.
+  </Card>
+  <Card title="Role distribution" icon="pie-chart">
+    Breakdown of the user base by role: regular users, VIPs, trial admins, full admins, and banned accounts.
+  </Card>
+  <Card title="Activity heatmap" icon="calendar">
+    A visual map of when users are most active. Useful for scheduling maintenance and planning announcements.
+  </Card>
+  <Card title="Engagement trends" icon="trending-up">
+    Message volumes, feature usage, and overall engagement over time. Useful for identifying growth or decline.
+  </Card>
+  <Card title="Session analytics" icon="clock">
+    Average session duration, bounce rates, and time-on-platform metrics.
+  </Card>
+</CardGroup>
+
+## Core stat cards
+
+The dashboard always shows the following live counters at a glance:
+
+| Stat | Description |
+|------|-------------|
+| Total users | All registered accounts |
+| Active bans | Accounts currently banned |
+| Total warnings | Sum of all warnings across all users |
+| VIP users | Accounts with VIP status |
+| Admins | Full admin accounts |
+| Trial admins | Accounts in trial admin status |
+| Actions (7 days) | Moderation actions taken in the last 7 days |
+
+## User distribution
+
+The dashboard also shows a breakdown of users by category:
+
+| Category | What it counts |
+|----------|----------------|
+| Regular | Active, non-VIP, non-admin, non-banned users |
+| VIP | Users with VIP status |
+| Admin | Users with Admin or Creator role |
+| Banned | Currently banned accounts |
+
+Each category is shown with a count and percentage of the total user base.
+
+## Derived metrics
+
+Two calculated metrics appear at the bottom of the summary section:
+
+**Ban rate** — The percentage of all users currently under an active ban. A sudden spike in ban rate may indicate a coordinated attack or a raid event.
+
+**Average warnings per user** — Total warnings issued divided by total users. This metric tracks how frequently the moderation team is intervening across the user base.
+
+## Using statistics effectively
+
+<AccordionGroup>
+  <Accordion title="Identify peak activity times">
+    Use the activity heatmap to see when users are most active. Schedule maintenance windows, updates, and non-urgent moderation reviews during low-activity periods to minimize disruption.
+  </Accordion>
+  <Accordion title="Track moderation load">
+    Monitor warning and ban trends over time. A sudden spike in the 7-day action count could indicate a raid, a coordinated harassment campaign, or an event that is attracting bad actors. Investigate early.
+  </Accordion>
+  <Accordion title="Measure community health">
+    User retention, engagement trends, and session duration metrics tell you whether the community is growing and users are finding value. Declining metrics may signal a problem worth addressing.
+  </Accordion>
+  <Accordion title="Export data for deeper analysis">
+    For trend analysis beyond what the dashboard provides, use the export function to download data for external tools. This is especially useful for long-term reporting or presenting stats to the Creator.
+  </Accordion>
+</AccordionGroup>
+
+## Accessing the dashboard
+
+<Steps>
+  <Step title="Open the moderation panel">
+    Navigate to `/moderation` while logged in with an admin account.
+  </Step>
+  <Step title="Click the Stats tab">
+    Select the **Stats** tab from the panel navigation.
+  </Step>
+  <Step title="Filter by time period">
+    Use the date range picker to narrow the data to a specific period — today, last 7 days, last 30 days, or a custom range.
+  </Step>
+  <Step title="Drill into charts">
+    Click on any chart or stat card to expand it and view more detailed breakdowns, including per-day counts and comparison to previous periods.
+  </Step>
+  <Step title="Export if needed">
+    Click the **Export** button to download the current view as a data file for external analysis or record-keeping.
+  </Step>
+</Steps>
+
+<Note>
+  All statistics are calculated in real time from the live database. There is no caching delay — the numbers you see reflect the current state of the platform.
+</Note>

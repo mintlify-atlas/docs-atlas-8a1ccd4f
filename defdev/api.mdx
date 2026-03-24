@@ -1,0 +1,140 @@
+---
+title: "API reference"
+description: "Technical reference for the Urbanshade OS internal APIs: Action Dispatcher, Command Queue, and System Bus."
+keywords: ["def-dev", "api", "action dispatcher", "command queue", "system bus"]
+---
+
+Urbanshade OS exposes three internal APIs that DEF-DEV and application code can use: the **Action Dispatcher**, the **Command Queue**, and the **System Bus**. Each serves a distinct communication role.
+
+<Note>
+  All three APIs are accessible from the browser console via `window.actionDispatcher`, `window.commandQueue`, and `window.systemBus`.
+</Note>
+
+## Architecture overview
+
+| API | Transport | Use case |
+|---|---|---|
+| Action Dispatcher | In-memory + localStorage | Event logging and persistence |
+| Command Queue | localStorage polling | Cross-page control (DEF-DEV → OS) |
+| System Bus | In-memory pub/sub | Same-page component communication |
+
+## Action Dispatcher
+
+The Action Dispatcher is the central event bus for logging, persistence to localStorage, and subscriber notifications.
+
+```typescript
+// Dispatch an action
+actionDispatcher.dispatch({
+  type: 'SYSTEM',
+  action: 'boot_complete',
+  details: { version: '2.2.0' }
+});
+
+// Subscribe to actions
+const unsubscribe = actionDispatcher.subscribe((action) => {
+  console.log('Action:', action.type, action.action);
+});
+
+// Control persistence
+actionDispatcher.setPersistence(true);
+actionDispatcher.loadFromStorage();
+actionDispatcher.clearStorage();
+```
+
+### Convenience methods
+
+The Action Dispatcher provides shorthand methods for each action type:
+
+| Method | Action type |
+|---|---|
+| `actionDispatcher.system()` | `SYSTEM` |
+| `actionDispatcher.user()` | `USER` |
+| `actionDispatcher.app()` | `APP` |
+| `actionDispatcher.file()` | `FILE` |
+| `actionDispatcher.error()` | `SECURITY` (error variant) |
+| `actionDispatcher.security()` | `SECURITY` |
+
+## Command Queue
+
+The Command Queue enables cross-page communication between DEF-DEV and the main OS by writing commands to localStorage. The main OS polls for and executes them at 4× per second.
+
+```typescript
+// Enqueue a command
+commandQueue.enqueue({
+  type: 'CRASH',
+  payload: { type: 'KERNEL_PANIC' },
+  source: 'DEF-DEV Admin'
+});
+
+// Dequeue the next command
+const cmd = commandQueue.dequeue();
+
+// Subscribe to all commands
+const unsubscribe = commandQueue.onAny((cmd) => {
+  console.log('Command:', cmd.type);
+});
+
+// Control polling
+commandQueue.startPolling(250); // 4x per second
+commandQueue.stopPolling();
+```
+
+### Command types
+
+| Command type | Description |
+|---|---|
+| `CRASH` | Trigger a crash screen |
+| `BUGCHECK` | Trigger a BSOD bugcheck |
+| `REBOOT` | Queue a system reboot |
+| `SHUTDOWN` | Queue a system shutdown |
+| `LOCKDOWN` | Trigger lockdown mode |
+| `RECOVERY` | Boot into recovery mode |
+| `WRITE_STORAGE` | Write a value to localStorage |
+| `DELETE_STORAGE` | Delete a localStorage key |
+| `TOAST` | Show a toast notification |
+| `WIPE` | Wipe all localStorage data |
+
+## System Bus
+
+The System Bus is a real-time in-memory pub/sub for same-page component communication. Events are processed immediately without any localStorage round-trip.
+
+```typescript
+// Emit an event
+systemBus.emit('TRIGGER_CRASH', {
+  crashType: 'KERNEL_PANIC'
+});
+
+// Subscribe to a specific event
+const unsubscribe = systemBus.on('TRIGGER_CRASH', (event) => {
+  console.log('Crash triggered:', event.payload);
+});
+
+// Subscribe to all events
+systemBus.onAny((event) => {
+  console.log('Event:', event.type);
+});
+```
+
+### System Bus events
+
+| Event | Description |
+|---|---|
+| `TRIGGER_CRASH` | Initiate a crash screen |
+| `TRIGGER_BUGCHECK` | Initiate a BSOD bugcheck |
+| `TRIGGER_LOCKDOWN` | Trigger facility lockdown screen |
+| `ENTER_RECOVERY` | Transition to recovery mode |
+| `TRIGGER_REBOOT` | Reboot the OS |
+| `TRIGGER_SHUTDOWN` | Shut down the OS |
+| `OPEN_DEV_MODE` | Open DEF-DEV console |
+| `MAINTENANCE_MODE` | Enter maintenance mode |
+
+## Global access
+
+All three APIs are exposed on `window` for quick access from the browser DevTools console:
+
+```typescript
+// Access APIs from browser console
+window.actionDispatcher
+window.commandQueue
+window.systemBus
+```

@@ -1,0 +1,78 @@
+---
+title: "Actions"
+description: "Monitor all system events and user interactions in real time with optional localStorage persistence."
+keywords: ["def-dev", "actions", "events", "persistence", "monitoring"]
+---
+
+The Actions tab connects to the Urbanshade OS **Action Dispatcher** — the central event bus that tracks system events, user interactions, and application lifecycle events in real time.
+
+<Note>
+  When persistence is enabled, actions are saved to localStorage so you can analyze events across browser sessions.
+</Note>
+
+## Action types
+
+All events are categorized by type:
+
+| Type | Color | Examples |
+|---|---|---|
+| `SYSTEM` | Purple | Boot sequence, settings changes, shutdown events |
+| `APP` | Blue | App opened, app closed, app errors |
+| `FILE` | Cyan | File created, file read, file deleted |
+| `USER` | Amber | Button clicks, form inputs, navigation |
+| `SECURITY` | Red | Login attempts, permission changes, lockdown events |
+| `WINDOW` | Green | Window opened, window closed, focus changes |
+
+## Persistence
+
+Action persistence stores the event log to localStorage so it survives page refreshes.
+
+```bash
+# LocalStorage keys used by the Actions tab
+def-dev-actions       # Stored action log entries
+def-dev-persistence   # "enabled" or "disabled"
+```
+
+**Benefits:**
+- Analyze events across sessions
+- Track boot sequences from start to finish
+- Debug intermittent issues that don't reproduce reliably
+- Review historical activity
+
+**Considerations:**
+- Uses localStorage space
+- Keeps the last 500 actions (older entries are dropped)
+- High event volume may slow down persistence writes
+- Cleared with the **Clear Actions** button
+
+### How persistence works
+
+<Steps>
+  <Step title="On OS boot">
+    The system checks whether `def-dev-persistence` is set to `enabled` in localStorage.
+  </Step>
+  <Step title="If enabled">
+    The Action Dispatcher loads existing actions from storage and continues appending new ones.
+  </Step>
+  <Step title="If disabled">
+    The system ignores existing action data and operates with a fresh in-memory log.
+  </Step>
+  <Step title="Toggle any time">
+    Use the **Toggle Persistence** button in the Actions or Admin tab to switch modes without rebooting.
+  </Step>
+</Steps>
+
+## Available actions
+
+<CardGroup cols={2}>
+  <Card title="Refresh from localStorage" icon="refresh-cw">
+    Reload the action list from localStorage to see the latest persisted events.
+  </Card>
+  <Card title="Clear Actions" icon="trash-2">
+    Clear all actions from both memory and localStorage.
+  </Card>
+</CardGroup>
+
+## Consent for destructive actions
+
+Some actions in the Actions tab — such as **Clear Actions** — will display a confirmation dialog before executing. This prevents accidental loss of persisted event history.

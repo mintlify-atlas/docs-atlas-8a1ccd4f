@@ -1,0 +1,82 @@
+---
+title: "Setup"
+description: "Complete guide to enabling Developer Mode and accessing the DEF-DEV console in Urbanshade OS."
+keywords: ["def-dev", "setup", "developer mode", "enable", "access"]
+---
+
+DEF-DEV requires Developer Mode to be enabled before you can access it. This page covers all four methods to enable it, the first-boot consent flow, and how to use alternative dev storage.
+
+<Note>
+  Developer Mode provides low-level access to system internals. Action logging may use localStorage, and some features — such as admin crash commands — can disrupt the entire OS session.
+</Note>
+
+## Enabling Developer Mode
+
+There are four ways to enable Developer Mode.
+
+<Steps>
+  <Step title="Method 1: During installation">
+    Start or reset the Urbanshade OS installation, navigate to the **Configuration** step, and check **Enable Developer Mode**.
+  </Step>
+  <Step title="Method 2: Via Settings app">
+    Open **Settings → Developer Options** and toggle **Enable Developer Mode** on.
+  </Step>
+  <Step title="Method 3: Browser console">
+    Open browser DevTools (`F12`), go to the **Console** tab, and run:
+
+    ```bash
+    devMode()
+    ```
+  </Step>
+  <Step title="Method 4: Recovery mode">
+    Reboot or refresh the page, press `F2` during the boot screen, and select **Developer Mode**.
+  </Step>
+</Steps>
+
+## Accessing DEF-DEV
+
+Once Developer Mode is enabled, navigate directly to `/def-dev`:
+
+```bash
+# In the browser address bar
+/def-dev
+
+# Or from the browser console
+window.location.href = '/def-dev'
+```
+
+You can also press `Ctrl+Shift+D` from anywhere in the OS to open the console overlay.
+
+## First-boot consent flow
+
+The first time you open DEF-DEV, a consent screen explains what the tool will do:
+
+- Create a dedicated localStorage key for action logging
+- Monitor system events and user interactions
+- Provide admin-level controls over the system
+
+Accept the consent to proceed. Your choice is stored in localStorage and you will not be prompted again.
+
+## Using alternative dev storage
+
+DEF-DEV stores its own data under specific localStorage keys, separate from main OS data:
+
+| Key | Purpose |
+|---|---|
+| `def-dev-actions` | Persisted action log entries |
+| `def-dev-persistence` | Persistence enabled/disabled flag |
+| `urbanshade_command_queue` | Pending commands queued for the main OS |
+
+You can inspect these keys directly in the [Storage tab](/defdev/storage) or clear them independently without affecting your OS session data.
+
+## Troubleshooting
+
+<Warning>
+  If you see `!COULDN'T BIND TO PAGE!` when opening DEF-DEV:
+
+  - Developer Mode is not enabled
+  - Settings were not saved properly
+  - localStorage may be blocked or cleared
+
+  Enable Developer Mode using one of the four methods above, then try again.
+</Warning>

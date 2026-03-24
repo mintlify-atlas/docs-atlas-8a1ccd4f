@@ -1,0 +1,152 @@
+---
+title: "Reporting Issues"
+description: "How to report users, bugs, security issues, and content concerns in Urbanshade OS."
+keywords: ["reporting", "admin", "bugs", "issues", "safety", "github"]
+---
+
+# Reporting issues
+
+Found something wrong? Whether it is a rule-breaking user, a bug, a security concern, or a content issue, this page explains how to report it effectively.
+
+<Note>
+  The simplest way to report anything in-simulation is to message a verified admin directly using the **Messages** app. Check for their Admin badge before reaching out.
+</Note>
+
+## What can be reported
+
+<CardGroup cols={2}>
+  <Card title="User misconduct" icon="user-x">
+    Harassment, spam, inappropriate content, impersonation of staff, or scam attempts targeting other users.
+  </Card>
+  <Card title="Security issues" icon="shield">
+    Suspicious account activity, potential exploits, vulnerabilities in the system, or evidence of account compromise.
+  </Card>
+  <Card title="Bugs and glitches" icon="bug">
+    Broken features, unexpected behavior, crashes, or visual issues within the OS or its applications.
+  </Card>
+  <Card title="Content concerns" icon="flag">
+    Inappropriate messages, policy violations, or concerning content in public spaces.
+  </Card>
+</CardGroup>
+
+## Reporting in-simulation
+
+To report a user or content concern within the OS:
+
+<Steps>
+  <Step title="Identify a verified admin">
+    Open the **Messages** app and find an admin. Make sure their account has the Admin badge — a system-rendered component, not an emoji or text in their name.
+  </Step>
+  <Step title="Write a clear message">
+    Include the username of the person you are reporting, what happened, when it happened, and any screenshots or evidence you can share.
+  </Step>
+  <Step title="Send the report">
+    Send the message and wait for a response. Do not message multiple admins with the same report — it creates duplicate work.
+  </Step>
+  <Step title="Wait for follow-up">
+    Admins will review the report and may ask for more information. They will respond when they have an update.
+  </Step>
+</Steps>
+
+## Writing a good report
+
+A well-written report gets reviewed faster and leads to more accurate outcomes.
+
+- **Be specific.** Describe exactly what happened, where it happened, and when.
+- **Include usernames.** If reporting a user, include their exact username (the `@handle`, not just a display name).
+- **Add screenshots.** Visual evidence helps admins understand and verify the issue.
+- **Be patient.** Admins respond as quickly as they can. Do not send repeated follow-up messages in quick succession.
+
+<Warning>
+  Filing false reports wastes everyone's time and may result in action being taken against your own account. Only report genuine issues and concerns.
+</Warning>
+
+## Reporting bugs to GitHub
+
+For bugs and improvement suggestions, the preferred channel is a GitHub issue on the [Urbanshade OS repository](https://github.com/aswdBatch/urbanshade-OS).
+
+**Submit one issue per person.** Inside a single issue, you can list as many bugs, suggestions, and questions as you need.
+
+### GitHub issue template
+
+Copy and paste the following template when opening an issue:
+
+```text
+Title: [Your Name] - [Feedback Title]
+
+Type: Bugs / Suggestions / Questions
+
+Description:
+
+Use this issue to report all your bugs, suggestions, and questions together.
+Keep everything organized with clear headings and bullet points.
+
+Bugs:
+- Short description
+- Steps to reproduce:
+  1. Step one
+  2. Step two
+- Expected vs actual result
+
+Suggestions:
+- Short description
+- Why it would help
+- Optional idea for improvement
+
+Questions (optional):
+- Any clarifications or uncertainties you'd like answered
+
+Environment (optional):
+- Browser / OS / version / device, if relevant
+
+Attachments (optional):
+- Screenshots, logs, or small code snippets that help explain the issue
+```
+
+<Note>
+  If you prefer not to use GitHub Issues, you can leave a comment or open a discussion — but please follow the same format above.
+</Note>
+
+## Reporting critical compile errors
+
+This section is only for **compile-time errors** (build failures, dependency issues). For all other bugs, use the standard GitHub issue template above.
+
+### Before reporting
+
+1. Make sure all dependencies are installed by running `npm install` in the project folder.
+2. Attempt `npm run build` again. If the error persists, follow the steps below.
+
+### Email template for compile errors
+
+Send the following to `emailbot00noreply@gmail.com`:
+
+```text
+Subject: [Your GitHub handle] - Critical Compile Error
+
+Hello. I've encountered this error while compiling:
+
+[Paste the full command you ran and the complete error output here]
+
+Screenshot: [attach screenshot file]
+
+Environment:
+- OS: [Windows / macOS / Linux / Android]
+- Node.js version: [e.g. v18.17.0]
+- npm version: [e.g. 9.6.7]
+- Device: [Laptop / Phone / etc.]
+```
+
+<Warning>
+  Only use this email process for compile-time errors. For runtime bugs, UI glitches, or feature suggestions, use the standard GitHub issue template. The more detail you provide — error logs, environment info, screenshots — the faster the issue can be diagnosed.
+</Warning>
+
+## Report priorities
+
+Admins triage reports using priority levels. You do not need to assign a priority yourself, but understanding them helps set expectations:
+
+| Priority | Examples | Expected response time |
+|----------|----------|-----------------------|
+| Critical | Account compromise, active exploits, coordinated attacks | As fast as possible |
+| High | Ongoing harassment, severe rule violations | Within hours |
+| Medium | Repeated minor violations, content concerns | Within a day |
+| Low | Minor bugs, cosmetic issues, general feedback | When time allows |

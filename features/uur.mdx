@@ -1,0 +1,167 @@
+---
+title: "UUR Repository"
+description: "The UrbanShade User Repository (UUR) — install packages, themes, and extensions for Urbanshade OS. Command reference, featured packages, and how to create and submit your own package."
+keywords: ["uur", "packages", "repository", "themes", "extensions", "community", "install", "uur inst"]
+---
+
+The UrbanShade User Repository (UUR) is a community-driven package repository for extensions, themes, utilities, and full applications. It is inspired by the Arch User Repository (AUR).
+
+<CardGroup cols={3}>
+  <Card title="50+ packages" icon="package">
+    Growing library of community-contributed packages.
+  </Card>
+  <Card title="Growing community" icon="users">
+    Open submissions with a review and rating system.
+  </Card>
+  <Card title="Easy installation" icon="download">
+    Install anything with a single `uur inst` command.
+  </Card>
+</CardGroup>
+
+<Info>
+  UUR was introduced in **v2.5** and received a major UI redesign and cloud sync support in **v2.7**.
+</Info>
+
+---
+
+## Quick start
+
+```bash
+# Search for a package
+uur search theme
+
+# Install a package
+uur inst extended-terminal
+
+# Install a specific version
+uur inst urbanshade-themes_2.1.0
+
+# Update all packages
+uur up
+
+# Remove a package
+uur rm facility-sounds
+```
+
+---
+
+## Command reference
+
+| Command | Description |
+|---|---|
+| `uur inst <pkg>` | Install the latest version of a package |
+| `uur inst <pkg>_<ver>` | Install a specific version of a package |
+| `uur rm <pkg>` | Remove an installed package |
+| `uur up` | Update all installed packages |
+| `uur up <pkg>` | Update a specific package |
+| `uur lst app` | List all available packages in the repository |
+| `uur lst installed` | List all currently installed packages |
+| `uur search <query>` | Search for packages by name or description |
+| `uur info <pkg>` | Show details about a package (version, author, dependencies) |
+| `uur sync` | Sync the local package list with the repository |
+| `uur clean` | Clear the local package cache |
+
+---
+
+## Package types
+
+<CardGroup cols={3}>
+  <Card title="Themes" icon="palette">
+    Color schemes, icons, wallpapers, and UI modifications for the desktop and apps.
+  </Card>
+  <Card title="Extensions" icon="code">
+    New terminal commands, system utilities, admin tools, and third-party integrations.
+  </Card>
+  <Card title="Applications" icon="zap">
+    Complete apps that add new functionality to Urbanshade OS.
+  </Card>
+</CardGroup>
+
+---
+
+## Featured packages
+
+These packages are curated by the UUR team and recommended as a starting point.
+
+| Package | Version | Stars | Description |
+|---|---|---|---|
+| `extended-terminal` | 3.0.1 | 67 | Additional terminal commands beyond the built-in set |
+| `sys-monitor-pro` | 2.0.0 | 55 | Advanced system monitoring with charts and live metrics |
+| `urbanshade-themes` | 2.1.0 | 48 | Collection of custom themes for the desktop and apps |
+| `dark-mode-plus` | 1.2.0 | 38 | Enhanced dark mode with per-app contrast controls |
+| `facility-sounds` | 1.3.2 | 32 | Ambient sound effects for the facility environment |
+| `custom-bugchecks` | 1.0.5 | 21 | Create and trigger custom crash screens |
+
+```bash
+# Install a featured package
+uur inst extended-terminal
+uur inst sys-monitor-pro
+uur inst urbanshade-themes
+```
+
+---
+
+## Creating packages
+
+Anyone can submit packages to UUR. Packages must follow the standard structure and pass a review before publishing.
+
+### Package structure
+
+Every package requires a `package.json` at its root:
+
+```json
+{
+  "name": "my-awesome-theme",
+  "version": "1.0.0",
+  "description": "A cool theme for UrbanShade",
+  "author": "your-username",
+  "type": "theme",
+  "files": ["theme.css", "icons/"],
+  "dependencies": []
+}
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `name` | Yes | Unique package identifier. Use kebab-case |
+| `version` | Yes | Semantic version string (e.g. `1.0.0`) |
+| `description` | Yes | Short description shown in search results |
+| `author` | Yes | Your UUR username |
+| `type` | Yes | One of: `theme`, `extension`, `application` |
+| `files` | Yes | Array of files and directories to include |
+| `dependencies` | No | Array of other UUR package names this package requires |
+
+### Submission
+
+Package submissions use a GitHub-based workflow with a review process before publishing.
+
+<Steps>
+  <Step title="Prepare your package">
+    Create your package files and a valid `package.json`. Test your package locally by loading it through the UUR Manager app.
+  </Step>
+  <Step title="Open a submission">
+    Submit your package via the **UUR Manager → Submit** tab in the OS, or open a pull request on the Urbanshade OS GitHub repository.
+  </Step>
+  <Step title="Review">
+    The UUR team reviews your submission for code quality, documentation, and guideline compliance. You may receive feedback before approval.
+  </Step>
+  <Step title="Publish">
+    Once approved, your package appears in the repository and is immediately installable by all users.
+  </Step>
+</Steps>
+
+---
+
+## Submission guidelines
+
+All packages must meet these requirements to be accepted into UUR.
+
+1. **All packages are reviewed before publishing** — do not expect immediate availability after submission.
+2. **No malicious code or security risks** — packages are sandboxed but reviewed manually.
+3. **Proper versioning required** — use [Semantic Versioning](https://semver.org): `MAJOR.MINOR.PATCH`.
+4. **Include clear documentation** — a `README.md` describing what your package does, how to install it, and any configuration options.
+5. **Respect copyright and licenses** — do not include assets or code you do not have the rights to distribute.
+
+<Note>
+  Real-time submission status is backed by cloud storage. You can track your submission's review progress in the **UUR Manager → Submissions** tab.
+</Note>

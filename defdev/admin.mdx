@@ -1,0 +1,100 @@
+---
+title: "Admin Tools"
+description: "Administrative testing utilities for crash triggers, system state control, and FakeMod moderation testing."
+keywords: ["def-dev", "admin", "crash", "bugcheck", "fakemod", "system controls"]
+---
+
+The Admin panel provides advanced controls for testing crash screens, triggering system states, and simulating moderation actions — all through the DEF-DEV command queue without affecting real user data.
+
+<Warning>
+  Admin panel actions queue commands that execute on the main OS page. Make sure the main OS is open in another tab, or commands will execute the next time you visit the main page.
+</Warning>
+
+## Command queue system
+
+All Admin panel actions are queued to localStorage. The main OS polls the queue **4 times per second** and executes commands in order. This means:
+
+- Commands take effect in the main OS, not inside DEF-DEV
+- You can queue multiple commands in sequence
+- Use `queue` in the [terminal](/defdev/terminal) to inspect pending commands
+
+## Crash screen triggers
+
+Trigger themed crash screens to test error UI and user experience flows:
+
+| Crash type | Description |
+|---|---|
+| `KERNEL_PANIC` | Core system kernel failure |
+| `CRITICAL_PROCESS_DIED` | Essential process terminated |
+| `MEMORY_MANAGEMENT` | Memory allocation error |
+| `SYSTEM_SERVICE_EXCEPTION` | System service exception |
+| `VIDEO_TDR_FAILURE` | Display driver timeout |
+
+<Tip>
+  After a crash screen appears, click **Debug Error** on the crash screen to return directly to DEF-DEV.
+</Tip>
+
+## Bugcheck triggers
+
+Bugchecks display a BSOD-style screen with a specific stop code. Use these to test the bugcheck UI:
+
+| Stop code | Description |
+|---|---|
+| `FATAL_EXCEPTION` | Unhandled fatal exception |
+| `SYSTEM_CORRUPTION` | System state corruption detected |
+| `HARDWARE_FAILURE` | Hardware-level failure |
+| `DRIVER_FAULT` | Driver fault or timeout |
+
+See [Bugchecks](/defdev/bugchecks) for the full stop code reference.
+
+## System controls
+
+<CardGroup cols={2}>
+  <Card title="Force Reboot" icon="refresh-cw">
+    Queue a system reboot command. The OS will restart on the next poll cycle.
+  </Card>
+  <Card title="Force Shutdown" icon="power">
+    Queue a system shutdown command.
+  </Card>
+  <Card title="Lockdown Mode" icon="lock">
+    Trigger the facility lockdown screen.
+  </Card>
+  <Card title="Recovery Mode" icon="hard-drive">
+    Boot the OS into the recovery environment.
+  </Card>
+</CardGroup>
+
+## FakeMod testing
+
+FakeMod lets you test moderation action UI without any real effect on users or accounts. All FakeMod actions are cosmetic — they display the relevant popup or indicator inside DEF-DEV for visual verification.
+
+<Note>
+  FakeMod actions do not write to any account data, dispatch real moderation events, or affect other users in any way.
+</Note>
+
+| Action | What it tests |
+|---|---|
+| **Ban** | Full account ban popup with reason and duration fields |
+| **Warning** | Warning notification overlay |
+| **Mute** | Mute indicator and duration display |
+| **Kick** | Session kick screen |
+
+## Terminal commands
+
+All admin operations are also available from the [terminal](/defdev/terminal):
+
+```bash
+$ crash [type]    # Trigger a crash screen
+$ bugcheck [code] # Trigger a bugcheck
+$ reboot          # Queue system reboot
+$ shutdown        # Queue system shutdown
+$ lockdown        # Trigger lockdown mode
+$ recovery        # Boot to recovery
+$ wipe            # Wipe all localStorage
+```
+
+## Danger zone
+
+<Warning>
+  The **Wipe System** action permanently clears all localStorage data — settings, accounts, files, and bugcheck history. The system will require a fresh installation afterwards. This cannot be undone.
+</Warning>

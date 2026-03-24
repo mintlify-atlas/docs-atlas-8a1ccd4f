@@ -1,0 +1,173 @@
+---
+title: Getting Started
+description: Learn the basics of Urbanshade OS — installation, first boot, OOBE setup, logging in, and navigating the desktop environment.
+keywords: ["urbanshade install", "first boot", "oobe", "login", "desktop setup", "new user guide"]
+---
+
+Welcome to the facility, recruit. This guide walks you through your first boot, setup, and orientation.
+
+## Boot sequence
+
+Urbanshade OS follows a realistic boot sequence every time you load the page:
+
+| Step | Label | Description |
+|------|-------|-------------|
+| 1 | `POST` | Power-On Self Test |
+| 2 | `BIOS` | Press `DEL` to enter BIOS settings |
+| 3 | `BOOT` | Loading kernel |
+| 4 | `INIT` | Starting services |
+| 5 | `LOGIN` | User authentication |
+| 6 | `DESKTOP` | Ready to use |
+
+<Tip>
+Press `DEL` during POST to enter BIOS settings. Press `F2` to enter Recovery Mode at any boot stage.
+</Tip>
+
+## Installation types
+
+Choose your installation type when you first set up Urbanshade OS. You can always install more apps later from the App Store.
+
+<Tabs>
+  <Tab title="Minimal (~2 min)">
+    Core system only. Fast installation for backup terminals and lightweight usage.
+
+    **Included:**
+    - Desktop Environment
+    - Terminal
+    - File Explorer
+    - Calculator
+    - Browser
+    - App Store
+    - Settings
+
+    **Not included:** Facility Apps, Research Tools, Game Hub, DEF-DEV Console, all 70+ apps
+  </Tab>
+  <Tab title="Standard (~5 min) ★">
+    Recommended for most users. Includes facility tools and productivity apps.
+
+    **Included:**
+    - Everything in Minimal
+    - Facility Apps
+
+    **Not included:** Research Tools, Game Hub, DEF-DEV Console, all 70+ apps
+
+    <Note>This is the recommended installation for most users.</Note>
+  </Tab>
+  <Tab title="Complete (~10 min)">
+    Full installation with all applications, research modules, and developer tools.
+
+    **Included:**
+    - Everything in Standard
+    - Research Tools
+    - Game Hub
+    - DEF-DEV Console
+    - All 70+ apps
+  </Tab>
+</Tabs>
+
+## OOBE setup
+
+After installation, the Out of Box Experience (OOBE) wizard guides you through personalizing your workstation.
+
+<Tip>
+You can change any of these settings later in the Settings app.
+</Tip>
+
+<Steps>
+  <Step title="Welcome">
+    Introduction screen and language selection.
+  </Step>
+  <Step title="Account creation">
+    Set your username and password. This is a simulation — do not use real credentials.
+  </Step>
+  <Step title="Theme selection">
+    Choose your visual theme from the available options.
+  </Step>
+  <Step title="Privacy settings">
+    Configure data and sync preferences.
+  </Step>
+  <Step title="Final setup">
+    Review all settings and complete the installation.
+  </Step>
+</Steps>
+
+## Login screen
+
+After OOBE completes, you will see the login screen on every subsequent visit.
+
+<Steps>
+  <Step title="Select your account">
+    Click your user account tile on the login screen.
+  </Step>
+  <Step title="Enter your password">
+    Type your password in the field that appears.
+  </Step>
+  <Step title="Log in">
+    Press `Enter` or click the arrow button to access the desktop.
+  </Step>
+</Steps>
+
+<Warning>
+This is a simulation. All data is stored in your browser's `localStorage`. Do not use real passwords.
+</Warning>
+
+To lock the screen later, press `Shift+L` from the desktop.
+
+## Desktop overview
+
+The desktop is your primary workspace for managing the facility.
+
+<CardGroup cols={2}>
+  <Card title="Desktop icons" icon="layout-grid">
+    Double-click icons on the desktop for quick access to pinned apps and files.
+  </Card>
+  <Card title="Taskbar" icon="minus">
+    Shows running windows and pinned apps. Located at the bottom of the screen.
+  </Card>
+  <Card title="Start menu" icon="grid">
+    Access all installed applications. Click the button in the bottom-left corner.
+  </Card>
+  <Card title="System tray" icon="bell">
+    Displays notifications and system status indicators in the bottom-right corner.
+  </Card>
+  <Card title="Quick settings" icon="sliders">
+    Toggles for volume, brightness, and other quick controls. Click the tray area to open.
+  </Card>
+  <Card title="Window management" icon="app-window">
+    Drag windows to snap them to screen edges. Right-click for context menus anywhere on the desktop.
+  </Card>
+</CardGroup>
+
+## Essential shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Shift+T` | Open Terminal |
+| `Shift+Q` | Close active window |
+| `Shift+L` | Lock screen |
+| `Shift+D` | Show desktop (minimize all) |
+| `Shift+W` | Task view |
+| `Shift+E` | Open File Explorer |
+| `Shift+I` | Open Settings |
+| `F11` | Toggle fullscreen |
+
+<Info>
+For the complete shortcut reference, see the [Keyboard Shortcuts](/shortcuts) page.
+</Info>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Core applications" icon="layout-grid" href="/applications">
+    Learn about File Explorer, Terminal, and the full app catalog.
+  </Card>
+  <Card title="Facility management" icon="shield" href="/facility-apps">
+    Discover security cameras, containment monitors, and infrastructure tools.
+  </Card>
+  <Card title="Keyboard shortcuts" icon="keyboard" href="/shortcuts">
+    Master every shortcut for boot, desktop, and terminal.
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/troubleshooting">
+    Fix common issues with the diagnostic guide and FAQ.
+  </Card>
+</CardGroup>

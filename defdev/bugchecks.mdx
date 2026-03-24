@@ -1,0 +1,93 @@
+---
+title: "Bugchecks"
+description: "Understanding real BSOD-style system errors in Urbanshade OS and how to debug them."
+keywords: ["def-dev", "bugcheck", "bsod", "crash", "stop codes", "debugging"]
+---
+
+A **bugcheck** in Urbanshade OS is a real, unrecoverable error that forces the system to halt immediately. Unlike themed crash screens triggered from the Admin panel, a bugcheck means something has genuinely gone wrong in the application code.
+
+<Warning>
+  Bugchecks are real errors. If you encounter one during normal use, please report it with the stop code and description so it can be fixed.
+</Warning>
+
+## Why the system halts
+
+When a bugcheck occurs, Urbanshade OS force-crashes to prevent:
+
+- **Save corruption** — continued operation could make stored data unreadable
+- **State desync** — the application could enter an inconsistent state that corrupts further writes
+- **Cascading failures** — one unhandled error can trigger many more
+
+## When do bugchecks occur?
+
+Bugchecks are triggered by two categories of issue:
+
+**Data corruption risks:**
+- JSON parse failures on critical localStorage data
+- localStorage write failures
+- A state object becoming `undefined` when it is required
+- Conflicting writes to the same storage key
+
+**UX-breaking issues:**
+- Desktop icons all colliding at the same position
+- The window manager losing track of open windows
+- Infinite re-render loops detected
+- A critical component failing to mount
+
+## Severity levels
+
+| Severity | Color | Meaning |
+|---|---|---|
+| `critical` | Red | System-halting failure, data at risk |
+| `high` | Orange | Serious error, major feature broken |
+| `medium` | Yellow | Degraded experience, workaround may exist |
+| `info` | Gray | Developer-triggered test error |
+
+## Bugcheck codes
+
+| Stop code | Hex | Severity | Description |
+|---|---|---|---|
+| `DESKTOP_MALFUNC` | `0x00000001` | high | Desktop layout or rendering failure |
+| `RENDER_FAILURE` | `0x00000002` | high | Component failed to render correctly |
+| `ICON_COLLISION` | `0x00000003` | medium | Multiple icons occupying same position |
+| `WINDOW_OVERFLOW` | `0x00000004` | medium | Too many windows or window state error |
+| `DATA_INCORRECT` | `0x00000010` | critical | Data validation failed, corrupt data |
+| `STATE_CORRUPTION` | `0x00000011` | critical | Application state became inconsistent |
+| `STORAGE_OVERFLOW` | `0x00000012` | high | localStorage quota exceeded |
+| `PARSE_FAILURE` | `0x00000013` | high | Failed to parse stored data (JSON error) |
+| `KERNEL_PANIC` | `0x00000020` | critical | Core system failure, unrecoverable |
+| `MEMORY_EXHAUSTED` | `0x00000021` | critical | Browser memory limit reached |
+| `INFINITE_LOOP` | `0x00000022` | high | Process stuck in infinite loop |
+| `STACK_OVERFLOW` | `0x00000023` | critical | Call stack exceeded maximum size |
+| `UNHANDLED_EXCEPTION` | `0x00000099` | high | Uncaught exception propagated to top level |
+| `DEV_ERR` | `0x000000FF` | info | Developer-triggered test error |
+
+## Testing bugchecks
+
+Developers can manually trigger bugchecks from the terminal to test the crash screen UI:
+
+```bash
+$ bugcheck DEV_TEST "Testing bugcheck system"
+$ bugcheck KERNEL_PANIC "Simulated kernel failure"
+$ sudo set bugcheck 0  # Disables bugchecks until refresh
+```
+
+## Viewing bugcheck reports
+
+All bugchecks are automatically saved to `urbanshade_bugchecks` in localStorage and visible in DEF-DEV:
+
+<Steps>
+  <Step title="Open DEF-DEV">
+    Navigate to `/def-dev` or press `Ctrl+Shift+D`.
+  </Step>
+  <Step title="Open the Bugchecks tab">
+    Click **Bugchecks** in the navigation sidebar.
+  </Step>
+  <Step title="Review, export, or clear">
+    View the full crash dump for each event, export reports as `.dmp` files, or clear the history.
+  </Step>
+</Steps>
+
+<Tip>
+  After triggering a test bugcheck, use the **Debug Error** button on the crash screen to return directly to DEF-DEV.
+</Tip>

@@ -1,0 +1,159 @@
+---
+title: Contributing
+description: Project structure, version bump process, PR workflow, and development setup for Urbanshade OS.
+keywords: ['contributing', 'github', 'pull request', 'project structure', 'version']
+---
+
+Contributions of all sizes are welcome — bug fixes, new features, documentation improvements, and testing.
+
+## Development setup
+
+<Steps>
+  <Step title="Fork the repository">
+    Create your own fork of [urbanshade-OS](https://github.com/aswdBatch/urbanshade-OS) on GitHub.
+  </Step>
+  <Step title="Clone locally">
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/urbanshade-OS
+    cd urbanshade-OS
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    npm install
+    ```
+  </Step>
+  <Step title="Create a branch">
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+  </Step>
+  <Step title="Start the dev server">
+    ```bash
+    npm run dev
+    ```
+    The app runs at `http://localhost:5173`.
+  </Step>
+  <Step title="Make changes and test">
+    Write your code. Verify the feature works and there are no console errors or TypeScript errors.
+  </Step>
+  <Step title="Commit and push">
+    ```bash
+    git add .
+    git commit -m "feat: describe your change"
+    git push origin feature/your-feature-name
+    ```
+  </Step>
+  <Step title="Open a pull request">
+    Open a PR against `main` on the upstream repository. Fill in the PR description template.
+  </Step>
+</Steps>
+
+## Project structure
+
+```text
+src/
+├── components/
+│   ├── apps/              # Desktop application components
+│   ├── ui/                # shadcn/ui primitives
+│   ├── shared/            # Shared UI (avatars, spinners, etc.)
+│   ├── widgets/           # Desktop widgets
+│   ├── docs/              # Documentation layout components
+│   ├── defdev/            # DEF-DEV developer tools
+│   ├── moderation/        # Moderation panel tabs
+│   └── *.tsx              # System components (Desktop, Taskbar, etc.)
+├── hooks/                 # 40+ custom React hooks organized by domain
+├── lib/                   # Utilities, registries, and helpers
+│   ├── appRegistry.tsx    # Central app definition factory
+│   ├── systemBus.ts       # Cross-component event bus
+│   ├── persistence.ts     # localStorage state management
+│   ├── terminalScripts.ts # Terminal script runner
+│   └── version.json       # Current version metadata
+├── pages/                 # Route pages (docs, admin, status, etc.)
+├── types/                 # Shared TypeScript interfaces
+└── integrations/          # Supabase client and generated types
+```
+
+## Version bump process
+
+When releasing a new version, you must update **three files**:
+
+<Steps>
+  <Step title="Update version.json">
+    Edit `src/lib/version.json`:
+
+    ```json
+    {
+      "major": 3,
+      "minor": 6,
+      "patch": 0,
+      "codename": "YourCodename",
+      "build": 8800,
+      "fullVersion": "3.6.0",
+      "displayVersion": "V3.6.0",
+      "shortVersion": "3.6.0",
+      "releaseDate": "2026-04-01"
+    }
+    ```
+  </Step>
+  <Step title="Update index.html">
+    Update the `<title>` tag in `index.html` to include the new version number.
+  </Step>
+  <Step title="Add a changelog entry">
+    Add a new entry for the version in `src/components/ChangelogDialog.tsx`.
+  </Step>
+</Steps>
+
+<Warning>
+  All three files must be updated together. A version bump PR that misses any of these will be rejected.
+</Warning>
+
+## Code style guidelines
+
+<CardGroup cols={3}>
+  <Card title="Code style" icon="code">
+    Use TypeScript for all new code. Follow existing naming conventions. Write meaningful commit messages.
+  </Card>
+  <Card title="Component guidelines" icon="puzzle">
+    Keep components focused and single-purpose. Use hooks for shared logic. Prefer composition over inheritance. Document props with JSDoc.
+  </Card>
+  <Card title="Testing" icon="check-circle">
+    Test new features before submitting. Check for regressions in related areas. Verify responsive behavior.
+  </Card>
+</CardGroup>
+
+Key rules:
+
+- Use TypeScript for all new code — no plain `.js` files
+- Use semantic design tokens (`bg-background`, `text-foreground`) — never hardcoded colors
+- Use `h-full flex flex-col` as the root layout for app components
+- Keep new hooks in `src/hooks/` organized by domain
+- Use Lucide icons at `w-11 h-11` for app icons in `appRegistry.tsx`
+
+## Pull request checklist
+
+Before submitting your PR, confirm:
+
+- [ ] Code follows project style guidelines
+- [ ] No TypeScript errors or warnings
+- [ ] Feature works as expected
+- [ ] No console errors in the browser
+- [ ] PR description explains the changes
+- [ ] Screenshots included for UI changes
+
+## Ways to contribute
+
+<CardGroup cols={2}>
+  <Card title="Bug fixes" icon="alert-circle" href="https://github.com/aswdBatch/urbanshade-OS/issues">
+    Found a bug? Open an issue or submit a fix directly.
+  </Card>
+  <Card title="New features" icon="zap">
+    Have an idea? Discuss it in a GitHub issue first, then implement it.
+  </Card>
+  <Card title="Documentation" icon="book-open">
+    Help improve guides, fix inaccuracies, or add missing examples.
+  </Card>
+  <Card title="Testing" icon="check-square">
+    Help test new features and report issues you find.
+  </Card>
+</CardGroup>

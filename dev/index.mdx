@@ -1,0 +1,77 @@
+---
+title: Developer docs
+description: Build extensions, themes, and apps for Urbanshade OS. Architecture, theming, and API documentation.
+keywords: ['developer', 'api', 'theming', 'apps', 'extensions']
+---
+
+Create applications, themes, terminal commands, and extensions. Everything you need to extend the Urbanshade OS experience.
+
+## Tech stack
+
+Urbanshade OS is built on:
+
+- **React 18** — UI library with hooks
+- **TypeScript** — type-safe JavaScript throughout
+- **Vite** — fast build tool and dev server
+- **Tailwind CSS** — utility-first CSS framework
+- **Supabase** — auth, database, and edge functions
+- **shadcn/ui** — headless component primitives
+
+## Key files
+
+| File | Description |
+|------|-------------|
+| `src/lib/appRegistry.tsx` | Central app definition factory |
+| `src/lib/systemBus.ts` | Cross-component event bus |
+| `src/components/WindowManager.tsx` | Window rendering switch |
+| `src/lib/terminalScripts.ts` | Terminal script runner |
+| `src/lib/persistence.ts` | localStorage state persistence |
+| `src/types/window.ts` | `App` and `WindowData` interfaces |
+
+## Quick start
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/aswdBatch/urbanshade-OS
+    cd urbanshade-OS
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    npm install
+    ```
+  </Step>
+  <Step title="Start the dev server">
+    ```bash
+    npm run dev
+    ```
+    The app will be available at `http://localhost:5173`.
+  </Step>
+</Steps>
+
+## Developer sections
+
+<CardGroup cols={2}>
+  <Card title="Architecture overview" icon="layers" href="/dev/architecture">
+    Boot flow, component hierarchy, state management, and hook architecture. Start here.
+  </Card>
+  <Card title="Theming & styling" icon="palette" href="/dev/theming">
+    Design tokens, `useThemeEngine`, and the Theme Editor app.
+  </Card>
+  <Card title="Building apps" icon="puzzle" href="/dev/building-apps">
+    Register apps via `appRegistry.tsx` and integrate with `WindowManager`.
+  </Card>
+  <Card title="Terminal commands" icon="terminal" href="/dev/terminal-commands">
+    Built-in commands and the terminal scripts system.
+  </Card>
+  <Card title="System Bus API" icon="cpu" href="/dev/system-bus">
+    Typed event bus for crashes, reboots, lockdowns, and more.
+  </Card>
+  <Card title="UUR packages" icon="package" href="/dev/uur-packages">
+    In-simulation package repository for community-created apps.
+  </Card>
+  <Card title="Contributing" icon="git-branch" href="/dev/contributing">
+    Project structure, version bump process, and PR workflow.
+  </Card>
+</CardGroup>
